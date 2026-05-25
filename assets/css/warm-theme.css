@@ -1,0 +1,105 @@
+/**
+ * Herbal Pearls — Warm Theme (Section-Level Visual Treatment)
+ * v3 §6 section surfaces, homepage rhythm, PDP alternation.
+ * All colors from tokens.css.
+ *
+ * @package HerbalPearls
+ */
+
+/* ============================================================
+   1. HOMEPAGE RHYTHM (v3 §6.1)
+   ============================================================ */
+
+/* [4] Trust strip */
+.hp-trust-strip {
+	background: var(--hp-bg-1);
+}
+
+/* [5] Category triptych — bg-page, cards are white */
+.hp-surface-page {
+	background: var(--hp-bg-page);
+}
+
+/* [6] Bestsellers — bg-2 deeper champagne band */
+.hp-surface-2 {
+	background: var(--hp-bg-2);
+}
+
+/* [8] Ingredient story — bg-1 */
+.hp-surface-1 {
+	background: var(--hp-bg-1);
+}
+
+/* [9] Reviews — bg-2 */
+/* section already handled via .hp-surface-2 */
+
+/* [11] Newsletter — bg-3 sandstone */
+.hp-surface-3 {
+	background: var(--hp-bg-3);
+}
+
+/* Cards on tinted backgrounds use pure white */
+.hp-surface-1 .hp-card,
+.hp-surface-2 .hp-card,
+.hp-surface-3 .hp-card {
+	background: var(--hp-bg-pure);
+}
+
+/* ============================================================
+   2. PDP ALTERNATION (v3 §6.2)
+   ============================================================ */
+
+/* Cream throughout PDP body */
+.single-product .hp-section {
+	background: var(--hp-bg-page);
+}
+
+/* Gallery card stays white */
+.woocommerce div.product .woocommerce-product-gallery {
+	background: var(--hp-bg-pure);
+}
+
+/* Section alternation below PDP fold */
+.single-product .hp-related-section {
+	background: var(--hp-bg-page);
+}
+
+/* ============================================================
+   3. CART / CHECKOUT SURFACES (v3 §6.3)
+   ============================================================ */
+
+.woocommerce-cart,
+.woocommerce-checkout {
+	background: var(--hp-bg-page);
+}
+
+/* ============================================================
+   4. HEADER & FOOTER POLISH
+   ============================================================ */
+
+.hp-header.is-scrolled {
+	border-bottom-color: var(--hp-line-3);
+}
+
+.hp-footer {
+	background: var(--hp-bg-3);
+}
+
+/* ============================================================
+   5. BLOG SINGLE
+   ============================================================ */
+
+.single-post .hp-post-content {
+	max-width: 720px;
+	margin-inline: auto;
+}
+
+/* ============================================================
+   6. MOBILE NAV
+   ============================================================ */
+
+@media (max-width: 1023px) {
+	.hp-header__nav {
+		display: none;
+	}
+}

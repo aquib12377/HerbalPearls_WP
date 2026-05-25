@@ -1,0 +1,449 @@
+/**
+ * Herbal Pearls — Base CSS
+ * Reset, typography, layout, accessibility.
+ * All colors from tokens.css custom properties.
+ *
+ * @package HerbalPearls
+ */
+
+/* ============================================================
+   1. RESET
+   ============================================================ */
+
+*,
+*::before,
+*::after {
+	box-sizing: border-box;
+}
+
+html {
+	-webkit-text-size-adjust: 100%;
+	   -moz-text-size-adjust: 100%;
+	        text-size-adjust: 100%;
+	scroll-behavior: smooth;
+}
+
+body {
+	margin: 0;
+	min-height: 100vh;
+	font-family: system-ui, -apple-system, 'Segoe UI', sans-serif;
+	font-size: 1rem;
+	font-weight: 400;
+	line-height: 1.65;
+	color: var(--hp-text-2);
+	background: var(--hp-bg-page);
+	-webkit-font-smoothing: antialiased;
+	-moz-osx-font-smoothing: grayscale;
+}
+
+img,
+picture,
+video,
+canvas,
+svg {
+	display: block;
+	max-width: 100%;
+	height: auto;
+}
+
+input,
+button,
+textarea,
+select {
+	font: inherit;
+	color: inherit;
+}
+
+p,
+h1, h2, h3, h4, h5, h6 {
+	overflow-wrap: break-word;
+	margin: 0;
+}
+
+ul, ol {
+	margin: 0;
+	padding: 0;
+	list-style: none;
+}
+
+a {
+	color: inherit;
+}
+
+/* ============================================================
+   2. TYPOGRAPHY
+   ============================================================ */
+
+/* Headings — Cormorant Garamond with Georgia fallback */
+h1, h2, h3 {
+	font-family: 'Cormorant Garamond', Georgia, 'Times New Roman', serif;
+	font-weight: 600;
+	color: var(--hp-text-1);
+	letter-spacing: -0.01em;
+	line-height: 1.15;
+	margin-bottom: 0.5em;
+}
+
+h1 {
+	font-size: clamp(1.75rem, 4vw, 3rem);
+	text-wrap: balance;
+}
+
+h2 {
+	font-size: clamp(1.375rem, 3vw, 2.25rem);
+	text-wrap: balance;
+}
+
+h3 {
+	font-size: clamp(1.125rem, 2vw, 1.5rem);
+}
+
+h4 {
+	font-family: system-ui, -apple-system, 'Segoe UI', sans-serif;
+	font-weight: 600;
+	font-size: 1rem;
+	color: var(--hp-text-1);
+	margin-bottom: 0.5em;
+}
+
+/* Body text */
+p {
+	margin-bottom: 1em;
+	font-size: 1rem;
+	line-height: 1.65;
+}
+
+p:last-child {
+	margin-bottom: 0;
+}
+
+/* Subtitle — Cormorant italic, gold */
+.hp-subtitle {
+	font-family: 'Cormorant Garamond', Georgia, 'Times New Roman', serif;
+	font-weight: 400;
+	font-style: italic;
+	font-size: clamp(1rem, 2vw, 1.25rem);
+	color: var(--hp-gold-700);
+	margin-bottom: 1em;
+}
+
+/* Script accent — Allura, 1 per page max */
+.hp-script {
+	font-family: 'Allura', 'Brush Script MT', cursive;
+	font-weight: 400;
+	font-size: clamp(1.5rem, 3vw, 2.25rem);
+	color: var(--hp-gold-700);
+	line-height: 1.3;
+	margin-bottom: 0.5em;
+}
+
+/* Captions / small */
+small,
+.hp-caption {
+	font-size: 0.8125rem;
+	color: var(--hp-text-4);
+}
+
+/* Inline links (only bare <a> without a class) */
+a:not([class]) {
+	color: var(--hp-gold-700);
+	text-underline-offset: 0.2em;
+	text-decoration-color: var(--hp-gold-500);
+}
+
+a:not([class]):hover {
+	color: var(--hp-brown-700);
+}
+
+/* Blockquote — green audit item #6 */
+blockquote {
+	margin: 1.5rem 0;
+	padding: 1rem 1.5rem;
+	border-left: 4px solid var(--hp-green-leaf);
+	background: var(--hp-bg-1);
+	border-radius: 0 8px 8px 0;
+	font-style: italic;
+}
+
+blockquote cite {
+	display: block;
+	margin-top: 0.75rem;
+	font-size: 0.8125rem;
+	font-style: normal;
+	color: var(--hp-text-3);
+}
+
+/* ============================================================
+   3. LAYOUT
+   ============================================================ */
+
+/* Container — centers and constrains content */
+.hp-container {
+	width: 100%;
+	max-width: 1280px;
+	margin-inline: auto;
+	padding-inline: 1rem;
+}
+
+@media (min-width: 768px) {
+	.hp-container {
+		padding-inline: 2rem;
+	}
+}
+
+/* Section — vertical rhythm */
+.hp-section {
+	padding-block: 3rem;
+}
+
+@media (min-width: 768px) {
+	.hp-section {
+		padding-block: 5rem;
+	}
+}
+
+.hp-section--sm {
+	padding-block: 1.5rem;
+}
+
+@media (min-width: 768px) {
+	.hp-section--sm {
+		padding-block: 2.5rem;
+	}
+}
+
+.hp-section--lg {
+	padding-block: 4rem;
+}
+
+@media (min-width: 768px) {
+	.hp-section--lg {
+		padding-block: 7rem;
+	}
+}
+
+/* Surface alternation */
+.hp-surface-page   { background: var(--hp-bg-page); }
+.hp-surface-1      { background: var(--hp-bg-1); }
+.hp-surface-2      { background: var(--hp-bg-2); }
+.hp-surface-3      { background: var(--hp-bg-3); }
+.hp-surface-accent { background: var(--hp-bg-accent); }
+.hp-surface-pure   { background: var(--hp-bg-pure); }
+
+/* Grid helpers */
+.hp-grid-2,
+.hp-grid-3,
+.hp-grid-4 {
+	display: grid;
+	gap: 1rem;
+}
+
+.hp-grid-2 { grid-template-columns: repeat(2, 1fr); }
+.hp-grid-3 { grid-template-columns: repeat(3, 1fr); }
+.hp-grid-4 { grid-template-columns: repeat(2, 1fr); }
+
+@media (min-width: 600px) {
+	.hp-grid-4 { grid-template-columns: repeat(4, 1fr); }
+}
+
+@media (max-width: 599px) {
+	.hp-grid-3 { grid-template-columns: 1fr; }
+}
+
+@media (min-width: 768px) {
+	.hp-grid-2,
+	.hp-grid-3,
+	.hp-grid-4 { gap: 1.5rem; }
+}
+
+/* Flex helpers */
+.hp-flex {
+	display: flex;
+	align-items: center;
+	gap: 0.75rem;
+}
+
+.hp-flex--between {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+}
+
+.hp-flex--center {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}
+
+.hp-flex--wrap {
+	flex-wrap: wrap;
+}
+
+/* Spacing utilities */
+.hp-mt-1 { margin-top: 1rem; }
+.hp-mb-1 { margin-bottom: 1rem; }
+.hp-mt-2 { margin-top: 2rem; }
+.hp-mb-2 { margin-bottom: 2rem; }
+.hp-mt-3 { margin-top: 3rem; }
+.hp-mb-3 { margin-bottom: 3rem; }
+
+/* Text alignment */
+.hp-text-center { text-align: center; }
+.hp-text-left   { text-align: left; }
+.hp-text-right  { text-align: right; }
+
+/* Rounded utility */
+.hp-rounded { border-radius: 12px; }
+
+/* ============================================================
+   4. FOCUS & ACCESSIBILITY
+   ============================================================ */
+
+:focus-visible {
+	outline: 2px solid var(--hp-gold-600);
+	outline-offset: 2px;
+	border-radius: 2px;
+}
+
+:focus:not(:focus-visible) {
+	outline: none;
+}
+
+/* Screen reader only */
+.screen-reader-text {
+	border: 0;
+	clip: rect(1px, 1px, 1px, 1px);
+	-webkit-clip-path: inset(50%);
+	        clip-path: inset(50%);
+	height: 1px;
+	margin: -1px;
+	overflow: hidden;
+	padding: 0;
+	position: absolute;
+	width: 1px;
+	word-wrap: normal !important;
+}
+
+.screen-reader-text:focus {
+	background: #fff;
+	clip: auto !important;
+	-webkit-clip-path: none;
+	        clip-path: none;
+	color: #000;
+	display: block;
+	font-size: 1rem;
+	height: auto;
+	left: 8px;
+	line-height: normal;
+	padding: 15px 23px 14px;
+	text-decoration: none;
+	top: 8px;
+	width: auto;
+	z-index: 100000;
+}
+
+/* Skip link */
+.hp-skip-link {
+	position: absolute;
+	top: -100%;
+	left: 0;
+	z-index: 9999;
+	padding: 12px 24px;
+	background: var(--hp-gold-600);
+	color: var(--hp-text-on-gold);
+	font-weight: 600;
+	font-size: 1rem;
+	text-align: center;
+}
+
+.hp-skip-link:focus {
+	top: 0;
+}
+
+/* Reduced motion */
+@media (prefers-reduced-motion: reduce) {
+	*,
+	*::before,
+	*::after {
+		animation-duration: 0.01ms !important;
+		animation-iteration-count: 1 !important;
+		transition-duration: 0.01ms !important;
+		scroll-behavior: auto !important;
+	}
+}
+
+/* ============================================================
+   5. SELECTION
+   ============================================================ */
+
+::selection {
+	background: var(--hp-gold-100);
+	color: var(--hp-brown-700);
+}
+
+/* ============================================================
+   6. WORDPRESS CORE ALIGNMENT
+   ============================================================ */
+
+.alignleft {
+	float: left;
+	margin-right: 1.5rem;
+	margin-bottom: 1rem;
+}
+
+.alignright {
+	float: right;
+	margin-left: 1.5rem;
+	margin-bottom: 1rem;
+}
+
+.aligncenter {
+	display: block;
+	margin-inline: auto;
+}
+
+.alignwide {
+	max-width: 1080px;
+	margin-inline: auto;
+}
+
+.alignfull {
+	width: 100vw;
+	margin-left: calc(50% - 50vw);
+}
+
+/* Post content — ensure readable line length */
+.hp-post-content {
+	font-size: 1rem;
+	line-height: 1.75;
+}
+
+.hp-post-content h2 {
+	margin-top: 2.5rem;
+	margin-bottom: 1rem;
+}
+
+.hp-post-content h3 {
+	margin-top: 2rem;
+	margin-bottom: 0.75rem;
+}
+
+.hp-post-content ul,
+.hp-post-content ol {
+	margin: 1rem 0;
+	padding-left: 1.5rem;
+	list-style: disc;
+}
+
+.hp-post-content ol {
+	list-style: decimal;
+}
+
+.hp-post-content li {
+	margin-bottom: 0.5rem;
+}
+
+.hp-post-content img {
+	border-radius: 12px;
+	margin: 1.5rem 0;
+}

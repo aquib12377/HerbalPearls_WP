@@ -1,0 +1,76 @@
+/**
+ * Herbal Pearls — Design Tokens (v3 Warm Champagne)
+ *
+ * @package HerbalPearls
+ */
+
+/* ============================================================
+   @font-face — generated dynamically by inc/perf.php
+   (conditional on font files existing — no 404s in console)
+   ============================================================ */
+
+/* ============================================================
+   Design Tokens — v3 §2 verbatim
+   ============================================================ */
+
+:root {
+	/* === SURFACES (warm cream-led, no dark surfaces) === */
+	--hp-bg-page:     #FAF5E8;   /* page background — warm ivory */
+	--hp-bg-1:        #F4ECD8;   /* primary surface, cards */
+	--hp-bg-2:        #ECE0C2;   /* elevated surface */
+	--hp-bg-3:        #E0D2B0;   /* hover state, deeper section */
+	--hp-bg-accent:   #D4C4A0;   /* deepest cream, footer or feature band */
+	--hp-bg-pure:     #FFFFFF;   /* pure white — for product image cards only */
+
+	/* === LINES === */
+	--hp-line-1:      #E0D2B0;   /* subtle border on cream */
+	--hp-line-2:      #C9B58F;   /* defined border */
+	--hp-line-3:      #A0793F;   /* gold separator on key moments */
+
+	/* === CHAMPAGNE GOLD (primary accent) === */
+	--hp-gold-100:    #FDF6DD;   /* gold tint background */
+	--hp-gold-300:    #DEC893;   /* light champagne */
+	--hp-gold-500:    #B89556;   /* brand gold */
+	--hp-gold-600:    #A0793F;   /* deep champagne — primary CTA */
+	--hp-gold-700:    #8C6B3A;   /* burnt gold — hover/pressed */
+
+	/* === WARM BROWN (text + jar amber + secondary accent) === */
+	--hp-brown-100:   #F4ECD8;   /* same as bg-1 */
+	--hp-brown-300:   #C9A96E;
+	--hp-brown-500:   #6B5439;   /* badge brown */
+	--hp-brown-700:   #4D3826;   /* coffee */
+	--hp-brown-900:   #2A2520;   /* espresso (use for headlines) */
+
+	/* === BLUSH / PEACH (warmth, lifestyle accents) === */
+	--hp-peach-300:   #E8B79C;   /* light peach */
+	--hp-peach-500:   #D89F7E;   /* warm peach */
+	--hp-blush:       #C99C82;
+	--hp-coral:       #B8403A;   /* hibiscus — sale badge / urgency only */
+
+	/* === GREEN (intentional minimal use) === */
+	--hp-green-logo:  #1F3D24;   /* LOGO ONLY — do not use as surface */
+	--hp-green-leaf:  #5C7A4F;   /* leaf icons, ingredient bullets */
+	--hp-sage-light:  #B8C4B0;   /* very subtle accent */
+	--hp-mint:        #6B8C5C;   /* success state */
+
+	/* === TEXT === */
+	--hp-text-1:      #2A2520;   /* primary body */
+	--hp-text-2:      #4D3826;   /* secondary */
+	--hp-text-3:      #6B5439;   /* muted */
+	--hp-text-4:      #8C7B5E;   /* disabled / captions */
+	--hp-text-on-gold:#FFFFFF;   /* on filled gold buttons */
+
+	/* === STATUS === */
+	--hp-success:     #6B8C5C;
+	--hp-warn:        #B89556;
+	--hp-error:       #B8403A;
+	--hp-sale:        #B8403A;   /* hibiscus — ties to brand */
+
+	/* === SHADOWS — soft, warm-tinted === */
+	--hp-shadow-sm:   0 1px 2px rgba(74, 56, 38, 0.06),
+	                  0 2px 4px rgba(74, 56, 38, 0.04);
+	--hp-shadow-md:   0 4px 12px rgba(74, 56, 38, 0.08),
+	                  0 2px 6px rgba(74, 56, 38, 0.05);
+	--hp-shadow-lg:   0 12px 32px rgba(74, 56, 38, 0.12),
+	                  0 4px 12px rgba(74, 56, 38, 0.06);
+}
