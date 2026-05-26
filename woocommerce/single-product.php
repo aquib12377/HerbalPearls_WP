@@ -37,7 +37,7 @@ while ( have_posts() ) :
 	?>
 
 	<!-- Breadcrumb row -->
-	<div class="hp-container">
+	<div class="hp-container pt-3">
 		<nav class="hp-crumbs" aria-label="<?php esc_attr_e( 'Breadcrumb', 'herbalpearls' ); ?>">
 			<?php
 			$crumbs = [
@@ -169,49 +169,43 @@ while ( have_posts() ) :
 	</div>
 
 	<?php
-	// Accordion — Full Details + Shipping & Returns only
-	// How to Use, Ingredients, FAQs are now below-fold sections via pdp-sections.php
+	// Compact accordion — Full Details + Shipping & Returns.
+	// Inline, no surface band: keeps the page short for products with limited copy.
 	$long_desc = $product->get_description();
 	?>
-	<section class="hp-section hp-surface-1" aria-labelledby="hp-pdp-details-title">
-		<div class="hp-container max-w-prose-hp">
-			<div class="hp-section-h">
-				<span class="hp-section-h__accent"><?php esc_html_e( 'good to know', 'herbalpearls' ); ?></span>
-				<h2 id="hp-pdp-details-title" class="hp-section-h__title"><?php esc_html_e( 'Product Details', 'herbalpearls' ); ?></h2>
-			</div>
-			<div class="hp-accordion bg-hp-bg-pure rounded-lg border border-hp-line-1 px-5" data-accordion>
-				<?php if ( $long_desc ) : ?>
-					<div class="hp-accordion__item">
-						<button type="button" class="hp-accordion__trigger" aria-expanded="false" data-accordion-trigger>
-							<span><?php esc_html_e( 'Full Details', 'herbalpearls' ); ?></span>
-							<svg class="hp-accordion__icon" width="20" height="20" viewBox="0 0 24 24" aria-hidden="true">
-								<path d="M6 9l6 6 6-6" stroke="currentColor" stroke-width="2" fill="none"/>
-							</svg>
-						</button>
-						<div class="hp-accordion__panel">
-							<div class="hp-accordion__content">
-								<?php echo wp_kses_post( wpautop( $long_desc ) ); ?>
-							</div>
-						</div>
-					</div>
-				<?php endif; ?>
-
+	<div class="hp-container max-w-prose-hp hp-pdp__details">
+		<div class="hp-accordion" data-accordion>
+			<?php if ( $long_desc ) : ?>
 				<div class="hp-accordion__item">
 					<button type="button" class="hp-accordion__trigger" aria-expanded="false" data-accordion-trigger>
-						<span><?php esc_html_e( 'Shipping & Returns', 'herbalpearls' ); ?></span>
+						<span><?php esc_html_e( 'Full Details', 'herbalpearls' ); ?></span>
 						<svg class="hp-accordion__icon" width="20" height="20" viewBox="0 0 24 24" aria-hidden="true">
 							<path d="M6 9l6 6 6-6" stroke="currentColor" stroke-width="2" fill="none"/>
 						</svg>
 					</button>
 					<div class="hp-accordion__panel">
 						<div class="hp-accordion__content">
-							<p><?php esc_html_e( 'Free shipping on orders above ₹499. Delivery within 5-7 business days across India. Easy returns within 7 days of delivery — products must be unopened and in original packaging.', 'herbalpearls' ); ?></p>
+							<?php echo wp_kses_post( wpautop( $long_desc ) ); ?>
 						</div>
+					</div>
+				</div>
+			<?php endif; ?>
+
+			<div class="hp-accordion__item">
+				<button type="button" class="hp-accordion__trigger" aria-expanded="false" data-accordion-trigger>
+					<span><?php esc_html_e( 'Shipping & Returns', 'herbalpearls' ); ?></span>
+					<svg class="hp-accordion__icon" width="20" height="20" viewBox="0 0 24 24" aria-hidden="true">
+						<path d="M6 9l6 6 6-6" stroke="currentColor" stroke-width="2" fill="none"/>
+					</svg>
+				</button>
+				<div class="hp-accordion__panel">
+					<div class="hp-accordion__content">
+						<p><?php esc_html_e( 'Free shipping on orders above ₹499. Delivery within 5-7 business days across India. Easy returns within 7 days of delivery — products must be unopened and in original packaging.', 'herbalpearls' ); ?></p>
 					</div>
 				</div>
 			</div>
 		</div>
-	</section>
+	</div>
 
 	<?php
 	// Below-fold sections — injected via hooks in inc/pdp-sections.php

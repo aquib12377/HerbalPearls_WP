@@ -203,64 +203,85 @@
 
 
 /* ============================================================
+   PDP DETAILS ACCORDION — inline, no surface band
+   Sits right after the buy form so the page stays compact for
+   products with limited copy.
+   ============================================================ */
+
+.hp-pdp__details {
+	padding-block: 1.5rem 2rem;
+}
+
+@media (min-width: 768px) {
+	.hp-pdp__details {
+		padding-block: 2rem 2.5rem;
+	}
+}
+
+/* ============================================================
    GALLERY — single product page
-   Forces a square aspect ratio on the image area (the WC flexslider
-   adds inline styles to the <img>, so we anchor aspect-ratio to a
-   wrapper instead). Positions sale badge top-left and zoom trigger
-   top-right inside the image so they don't sit in the card padding.
+   Square image area via padding-top:100% on the .__image wrapper
+   (most reliable against flexslider's inline styles, which override
+   aspect-ratio in some browser+WC version combos). Sale badge and
+   zoom trigger sit ON the image, not in the card padding.
    ============================================================ */
 
 .woocommerce div.product .woocommerce-product-gallery {
 	position: relative;
-	padding: 1rem;
+	padding: 0.75rem;
 }
 
 @media (min-width: 640px) {
 	.woocommerce div.product .woocommerce-product-gallery {
-		padding: 1.25rem;
+		padding: 1rem;
 	}
 }
 
-/* The slider wrapper + first image stay block-level so flexslider
- * doesn't collapse — but each gallery image is locked to 1:1. */
 .woocommerce div.product .woocommerce-product-gallery__wrapper {
 	margin: 0;
 	position: relative;
 }
 
-.woocommerce div.product .woocommerce-product-gallery__image,
-.woocommerce div.product .woocommerce-product-gallery__image > a {
-	display: block;
-	aspect-ratio: 1 / 1;
-	overflow: hidden;
-	border-radius: 10px;
-	background: var(--hp-bg-page);
+/* Square image area — padding-top is bulletproof against flexslider */
+.woocommerce div.product .woocommerce-product-gallery__image {
 	position: relative;
+	display: block;
+	overflow: hidden;
+	border-radius: 8px;
+	background: var(--hp-bg-page);
+}
+
+.woocommerce div.product .woocommerce-product-gallery__image::before {
+	content: '';
+	display: block;
+	padding-top: 100%;
 }
 
 .woocommerce div.product .woocommerce-product-gallery__image > a {
-	margin: 0;
-	border-radius: 0;
-}
-
-/* Image fills the square wrapper. Tap inline styles flexslider adds
- * (height: auto, width: 100%) so they don't break the aspect ratio. */
-.woocommerce div.product .woocommerce-product-gallery__image img {
 	position: absolute;
 	inset: 0;
-	width: 100%;
-	height: 100%;
-	max-width: none;
+	display: block;
+	margin: 0;
+}
+
+/* Image fills the square. !important is necessary to overrule
+ * flexslider's inline width/height styles. */
+.woocommerce div.product .woocommerce-product-gallery__image img {
+	position: absolute !important;
+	inset: 0 !important;
+	width: 100% !important;
+	height: 100% !important;
+	max-width: none !important;
 	object-fit: cover;
 	margin: 0;
 }
 
-/* Sale badge — anchor to the gallery image, not the card padding */
+/* Sale badge — anchored to the gallery card, sits on the image edge */
 .woocommerce div.product .onsale,
 .woocommerce-product-gallery .onsale {
 	position: absolute;
-	top: calc(1rem + 10px);
-	left: calc(1rem + 10px);
+	top: calc(0.75rem + 10px);
+	left: calc(0.75rem + 10px);
 	z-index: 3;
 	background: var(--hp-coral);
 	color: #FFFFFF;
@@ -281,16 +302,16 @@
 @media (min-width: 640px) {
 	.woocommerce div.product .onsale,
 	.woocommerce-product-gallery .onsale {
-		top: calc(1.25rem + 10px);
-		left: calc(1.25rem + 10px);
+		top: calc(1rem + 10px);
+		left: calc(1rem + 10px);
 	}
 }
 
 /* Zoom trigger — circular chrome at top-right of the image */
 .woocommerce-product-gallery__trigger {
 	position: absolute;
-	top: calc(1rem + 10px);
-	right: calc(1rem + 10px);
+	top: calc(0.75rem + 10px);
+	right: calc(0.75rem + 10px);
 	z-index: 3;
 	display: flex;
 	align-items: center;
@@ -316,15 +337,21 @@
 
 @media (min-width: 640px) {
 	.woocommerce-product-gallery__trigger {
-		top: calc(1.25rem + 10px);
-		right: calc(1.25rem + 10px);
+		top: calc(1rem + 10px);
+		right: calc(1rem + 10px);
 	}
 }
 
-/* Thumbnail strip — horizontal scroll under the main image */
+/* Thumbnail strip — compact horizontal scroll under the main image */
 .woocommerce div.product .flex-control-thumbs {
-	margin-top: 0.75rem;
+	margin-top: 0.625rem;
 	padding: 0;
+	gap: 6px;
+}
+
+.woocommerce div.product .flex-control-thumbs li img {
+	width: 56px;
+	height: 56px;
 }
 
 /* Gold border on active thumbnail */
