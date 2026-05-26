@@ -612,6 +612,13 @@ ul.products li.product .price .woocommerce-Price-amount {
 	margin: 0;
 }
 
+/* Tax note — small disclaimer under price ("Inclusive of all taxes.") */
+.hp-tax-note {
+	font-size: 0.8125rem;
+	color: var(--hp-text-4);
+	margin: 0;
+}
+
 /* Add to cart form */
 .woocommerce div.product form.cart {
 	display: flex;
@@ -873,39 +880,125 @@ ul.products li.product .price .woocommerce-Price-amount {
 	text-decoration: none;
 }
 
-/* Mobile cart layout */
+/* Mobile cart — true card-per-row layout (<768px) */
 @media (max-width: 768px) {
+	/* Reset the table-shaped chrome */
+	.woocommerce-cart-form {
+		background: transparent;
+		border: none;
+		border-radius: 0;
+		overflow: visible;
+	}
+
 	.woocommerce-cart-form table.shop_table thead {
 		display: none;
 	}
+
 	.woocommerce-cart-form table.shop_table,
-	.woocommerce-cart-form table.shop_table tbody,
-	.woocommerce-cart-form table.shop_table tr {
+	.woocommerce-cart-form table.shop_table tbody {
 		display: block;
+		background: transparent;
 	}
-	.woocommerce-cart-form table.shop_table tr {
+
+	/* Each row → standalone card */
+	.woocommerce-cart-form table.shop_table tbody tr.cart_item {
 		display: grid;
-		grid-template-columns: 72px 1fr auto;
+		grid-template-columns: 80px 1fr;
 		grid-template-areas:
-			"img name remove"
-			"img price price"
-			"img qty subtotal";
-		gap: 0.5rem 0.75rem;
+			"img    name"
+			"img    price"
+			"qty    subtotal"
+			"remove remove";
+		gap: 0.5rem 1rem;
 		padding: 1rem;
+		margin-bottom: 0.75rem;
+		background: var(--hp-bg-pure);
+		border: 1px solid var(--hp-line-1);
+		border-radius: 12px;
+		box-shadow: var(--hp-shadow-sm);
 		align-items: center;
-		border-bottom: 1px solid var(--hp-line-1);
 	}
+
+	/* Coupon row stays simple */
+	.woocommerce-cart-form table.shop_table tr:not(.cart_item) {
+		display: block;
+		padding: 1rem;
+		margin-bottom: 0.75rem;
+		background: var(--hp-bg-pure);
+		border: 1px solid var(--hp-line-1);
+		border-radius: 12px;
+	}
+
 	.woocommerce-cart-form table.shop_table td {
 		padding: 0;
 		border-bottom: none;
 		display: block;
 	}
-	.woocommerce-cart-form table.shop_table .product-thumbnail { grid-area: img; }
-	.woocommerce-cart-form table.shop_table .product-name { grid-area: name; }
-	.woocommerce-cart-form table.shop_table .product-remove { grid-area: remove; text-align: right; }
-	.woocommerce-cart-form table.shop_table .product-price { grid-area: price; }
-	.woocommerce-cart-form table.shop_table .product-quantity { grid-area: qty; }
-	.woocommerce-cart-form table.shop_table .product-subtotal { grid-area: subtotal; text-align: right; font-weight: 700; }
+
+	.woocommerce-cart-form table.shop_table .product-thumbnail {
+		grid-area: img;
+	}
+
+	.woocommerce-cart-form table.shop_table .product-thumbnail img {
+		width: 80px;
+		height: 80px;
+	}
+
+	.woocommerce-cart-form table.shop_table .product-name {
+		grid-area: name;
+		font-family: 'Cormorant Garamond', Georgia, serif;
+		font-size: 1rem;
+		font-weight: 600;
+		line-height: 1.25;
+	}
+
+	.woocommerce-cart-form table.shop_table .product-price {
+		grid-area: price;
+		font-size: 0.875rem;
+		color: var(--hp-text-3);
+	}
+
+	.woocommerce-cart-form table.shop_table .product-price::before {
+		content: attr(data-title) ': ';
+		font-size: 0.75rem;
+		color: var(--hp-text-4);
+		text-transform: uppercase;
+		letter-spacing: 0.05em;
+	}
+
+	.woocommerce-cart-form table.shop_table .product-quantity {
+		grid-area: qty;
+		justify-self: start;
+	}
+
+	.woocommerce-cart-form table.shop_table .product-subtotal {
+		grid-area: subtotal;
+		text-align: right;
+		font-size: 1.0625rem;
+		font-weight: 700;
+		color: var(--hp-text-1);
+	}
+
+	.woocommerce-cart-form table.shop_table .product-remove {
+		grid-area: remove;
+		text-align: right;
+		padding-top: 0.25rem;
+		border-top: 1px solid var(--hp-line-1);
+		margin-top: 0.25rem;
+	}
+
+	.woocommerce-cart-form table.shop_table .product-remove a {
+		display: inline-flex;
+		align-items: center;
+		gap: 0.375rem;
+		font-size: 0.8125rem;
+		color: var(--hp-text-3);
+	}
+
+	.woocommerce-cart-form table.shop_table .product-remove a::after {
+		content: 'Remove';
+		font-size: 0.8125rem;
+	}
 }
 
 /* Cart totals */

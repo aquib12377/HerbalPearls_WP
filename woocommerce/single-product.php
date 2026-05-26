@@ -117,7 +117,7 @@ while ( have_posts() ) :
 				</p>
 			<?php endif; ?>
 
-			<p class="hp-tax-note text-[13px] text-hp-text-4">
+			<p class="hp-tax-note">
 				<?php esc_html_e( 'Inclusive of all taxes.', 'herbalpearls' ); ?>
 			</p>
 

@@ -36,19 +36,9 @@ add_action( 'wp_enqueue_scripts', function() {
 		wp_enqueue_style( 'hp-bundle', HP_URI . '/assets/css/bundle.css', [ 'hp-woo' ], $v );
 	}
 
-	// Shop archive / product category
-	if ( is_shop() || is_product_category() || is_product_tag() ) {
-		wp_enqueue_style( 'hp-shop', HP_URI . '/assets/css/pages/shop.css', [ 'hp-woo' ], $v );
-	}
-
 	// Single product
 	if ( is_product() ) {
 		wp_enqueue_style( 'hp-pdp', HP_URI . '/assets/css/pages/pdp.css', [ 'hp-woo' ], $v );
-	}
-
-	// Cart page
-	if ( is_cart() ) {
-		wp_enqueue_style( 'hp-cart', HP_URI . '/assets/css/pages/cart.css', [ 'hp-woo' ], $v );
 	}
 
 	// Checkout
