@@ -20,14 +20,16 @@ get_header();
 </header>
 
 <section class="hp-section hp-surface-page">
-	<div class="hp-container hp-cart-layout">
-		<div class="hp-cart-main">
-			<?php
-			while ( have_posts() ) :
-				the_post();
-				the_content();
-			endwhile;
-			?>
+	<div class="hp-container">
+		<div class="hp-cart-layout">
+			<div class="hp-cart-main">
+				<?php
+				while ( have_posts() ) :
+					the_post();
+					the_content();
+				endwhile;
+				?>
+			</div>
 		</div>
 	</div>
 </section>

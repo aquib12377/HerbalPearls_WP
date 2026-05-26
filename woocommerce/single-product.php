@@ -117,7 +117,7 @@ while ( have_posts() ) :
 				</p>
 			<?php endif; ?>
 
-			<p class="hp-tax-note" style="font-size: 0.8125rem; color: var(--hp-text-4);">
+			<p class="hp-tax-note text-[13px] text-hp-text-4">
 				<?php esc_html_e( 'Inclusive of all taxes.', 'herbalpearls' ); ?>
 			</p>
 
@@ -159,19 +159,9 @@ while ( have_posts() ) :
 
 			// Trust strip
 			?>
+			<!-- Trust strip — reuse the shared component (matches homepage + bundle page) -->
 			<div class="hp-pdp__trust">
-				<div class="hp-trust-item">
-					<svg class="hp-trust-item__icon" width="18" height="18" viewBox="0 0 24 24" aria-hidden="true"><path d="M17 8C8 10 5.9 16.17 3.82 21.34l1.89.66.95-2.3c.48.17.98.3 1.34.3C19 20 22 3 22 3 17 5 13 9 13 15s-3 5-5 5c-.63 0-1.05-.05-1.63-.2" fill="none" stroke="currentColor" stroke-width="1.5"/></svg>
-					<span><?php esc_html_e( '100% Natural', 'herbalpearls' ); ?></span>
-				</div>
-				<div class="hp-trust-item">
-					<svg class="hp-trust-item__icon" width="18" height="18" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="10" fill="none" stroke="currentColor" stroke-width="1.5"/></svg>
-					<span><?php esc_html_e( 'Paraben Free', 'herbalpearls' ); ?></span>
-				</div>
-				<div class="hp-trust-item">
-					<svg class="hp-trust-item__icon" width="18" height="18" viewBox="0 0 24 24" aria-hidden="true"><path d="M21 12c0 5-4 9-9 9s-9-4-9-9 4-9 9-9" fill="none" stroke="currentColor" stroke-width="1.5"/></svg>
-					<span><?php esc_html_e( 'Cruelty Free', 'herbalpearls' ); ?></span>
-				</div>
+				<?php echo do_shortcode( '[hp_trust_strip]' ); ?>
 			</div>
 
 			<?php
@@ -203,41 +193,46 @@ while ( have_posts() ) :
 	// Accordion — Full Details + Shipping & Returns only
 	// How to Use, Ingredients, FAQs are now below-fold sections via pdp-sections.php
 	$long_desc = $product->get_description();
-	$has_accordion = $long_desc;
-	if ( $has_accordion ) :
-		?>
-		<div class="hp-accordion hp-mt-3 hp-container" data-accordion>
-			<?php if ( $long_desc ) : ?>
+	?>
+	<section class="hp-section hp-surface-1" aria-labelledby="hp-pdp-details-title">
+		<div class="hp-container max-w-prose-hp">
+			<div class="hp-section-h">
+				<span class="hp-section-h__accent"><?php esc_html_e( 'good to know', 'herbalpearls' ); ?></span>
+				<h2 id="hp-pdp-details-title" class="hp-section-h__title"><?php esc_html_e( 'Product Details', 'herbalpearls' ); ?></h2>
+			</div>
+			<div class="hp-accordion bg-hp-bg-pure rounded-lg border border-hp-line-1 px-5" data-accordion>
+				<?php if ( $long_desc ) : ?>
+					<div class="hp-accordion__item">
+						<button type="button" class="hp-accordion__trigger" aria-expanded="false" data-accordion-trigger>
+							<span><?php esc_html_e( 'Full Details', 'herbalpearls' ); ?></span>
+							<svg class="hp-accordion__icon" width="20" height="20" viewBox="0 0 24 24" aria-hidden="true">
+								<path d="M6 9l6 6 6-6" stroke="currentColor" stroke-width="2" fill="none"/>
+							</svg>
+						</button>
+						<div class="hp-accordion__panel">
+							<div class="hp-accordion__content">
+								<?php echo wp_kses_post( wpautop( $long_desc ) ); ?>
+							</div>
+						</div>
+					</div>
+				<?php endif; ?>
+
 				<div class="hp-accordion__item">
 					<button type="button" class="hp-accordion__trigger" aria-expanded="false" data-accordion-trigger>
-						<span><?php esc_html_e( 'Full Details', 'herbalpearls' ); ?></span>
+						<span><?php esc_html_e( 'Shipping & Returns', 'herbalpearls' ); ?></span>
 						<svg class="hp-accordion__icon" width="20" height="20" viewBox="0 0 24 24" aria-hidden="true">
 							<path d="M6 9l6 6 6-6" stroke="currentColor" stroke-width="2" fill="none"/>
 						</svg>
 					</button>
 					<div class="hp-accordion__panel">
 						<div class="hp-accordion__content">
-							<?php echo wp_kses_post( wpautop( $long_desc ) ); ?>
+							<p><?php esc_html_e( 'Free shipping on orders above ₹499. Delivery within 5-7 business days across India. Easy returns within 7 days of delivery — products must be unopened and in original packaging.', 'herbalpearls' ); ?></p>
 						</div>
-					</div>
-				</div>
-			<?php endif; ?>
-
-			<div class="hp-accordion__item">
-				<button type="button" class="hp-accordion__trigger" aria-expanded="false" data-accordion-trigger>
-					<span><?php esc_html_e( 'Shipping & Returns', 'herbalpearls' ); ?></span>
-					<svg class="hp-accordion__icon" width="20" height="20" viewBox="0 0 24 24" aria-hidden="true">
-						<path d="M6 9l6 6 6-6" stroke="currentColor" stroke-width="2" fill="none"/>
-					</svg>
-				</button>
-				<div class="hp-accordion__panel">
-					<div class="hp-accordion__content">
-						<p><?php esc_html_e( 'Free shipping on orders above ₹499. Delivery within 5-7 business days across India. Easy returns within 7 days of delivery — products must be unopened and in original packaging.', 'herbalpearls' ); ?></p>
 					</div>
 				</div>
 			</div>
 		</div>
-	<?php endif; ?>
+	</section>
 
 	<?php
 	// Below-fold sections — injected via hooks in inc/pdp-sections.php
@@ -249,7 +244,7 @@ while ( have_posts() ) :
 
 	// Compliance disclaimer
 	?>
-	<aside class="hp-disclaimer hp-mt-3">
+	<aside class="hp-tw-disclaimer hp-container">
 		<h4><?php esc_html_e( 'Disclaimer', 'herbalpearls' ); ?></h4>
 		<p><?php esc_html_e( 'Statements and product information have not been evaluated by any regulatory authority unless specified. Herbal Pearls products are intended for cosmetic use only and are not a substitute for medical advice, diagnosis, or treatment. Individual results may vary. Patch-test before first use.', 'herbalpearls' ); ?></p>
 	</aside>
@@ -261,7 +256,7 @@ while ( have_posts() ) :
 		<div class="hp-sticky-bar" aria-hidden="true" data-sticky-cta>
 			<div class="hp-sticky-bar__price">
 				<?php if ( $has_sale ) : ?>
-					<del style="font-size:0.75rem;color:var(--hp-text-4);margin-right:0.5rem;">₹<?php echo esc_html( number_format( $regular_price, 0 ) ); ?></del>
+					<del class="text-xs text-hp-text-4 mr-2">₹<?php echo esc_html( number_format( $regular_price, 0 ) ); ?></del>
 				<?php endif; ?>
 				₹<?php echo esc_html( number_format( $has_sale ? $sale_price : $regular_price, 0 ) ); ?>
 			</div>

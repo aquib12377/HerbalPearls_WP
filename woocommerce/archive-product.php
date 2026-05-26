@@ -10,22 +10,25 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 get_header();
+?>
 
+<!-- Shop page header — matches Cart / Checkout / Blog rhythm -->
+<header class="hp-blog-header">
+	<div class="hp-container">
+		<?php if ( apply_filters( 'woocommerce_show_page_title', true ) ) : ?>
+			<h1 class="woocommerce-products-header__title"><?php woocommerce_page_title(); ?></h1>
+		<?php endif; ?>
+		<?php do_action( 'woocommerce_archive_description' ); ?>
+	</div>
+</header>
+
+<?php
 /**
  * Hook: woocommerce_before_main_content.
+ * (Opens the .hp-container .hp-section wrapper added in inc/woocommerce.php)
  */
 do_action( 'woocommerce_before_main_content' );
 ?>
-
-<header class="woocommerce-products-header hp-mb-2">
-	<?php if ( apply_filters( 'woocommerce_show_page_title', true ) ) : ?>
-		<h1 class="woocommerce-products-header__title"><?php woocommerce_page_title(); ?></h1>
-	<?php endif; ?>
-
-	<?php
-	do_action( 'woocommerce_archive_description' );
-	?>
-</header>
 
 <div class="hp-shop-layout">
 	<?php

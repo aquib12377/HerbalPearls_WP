@@ -59,7 +59,7 @@ if ( $product->is_type( 'variable' ) ) {
 		<div class="hp-product-card__price">
 			<?php echo $product->get_price_html(); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped — WooCommerce escapes ?>
 			<?php if ( $sale_pct > 0 ) : ?>
-				<span class="hp-save-badge" style="display:block;margin-top:4px;">
+				<span class="hp-save-badge block mt-1">
 					<?php
 					printf(
 						/* translators: %d: percentage off */
