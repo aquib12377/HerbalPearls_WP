@@ -1,7 +1,10 @@
 <?php
 /**
- * Bundle landing page template.
- * Per v3 design system + redesign brief §5.3.
+ * Bundle landing page template — rebuilt with Tailwind utilities atop the
+ * legacy .hp-* component library. Visual rhythm now matches front-page.php:
+ * hero with script accent + serif h1, consistent .hp-section-h section
+ * headers, shared .hp-trust-strip, .hp-section padding scale, surface
+ * alternation via .hp-surface-*.
  *
  * @package HerbalPearls
  */
@@ -50,8 +53,8 @@ while ( have_posts() ) :
 	}
 	?>
 
-	<!-- Breadcrumb row -->
-	<div class="hp-container">
+	<!-- Breadcrumb -->
+	<div class="hp-container pt-4">
 		<nav class="hp-crumbs" aria-label="<?php esc_attr_e( 'Breadcrumb', 'herbalpearls' ); ?>">
 			<a href="<?php echo esc_url( home_url() ); ?>"><?php esc_html_e( 'Home', 'herbalpearls' ); ?></a>
 			<span class="hp-crumbs__sep" aria-hidden="true">/</span>
@@ -61,85 +64,132 @@ while ( have_posts() ) :
 		</nav>
 	</div>
 
-	<!-- Hero -->
-	<section class="hp-bundle-hero">
-		<div class="hp-container">
-			<div class="hp-bundle-hero__eyebrow">
-				<span class="hp-badge hp-badge--bestseller"><?php esc_html_e( 'BUNDLE', 'herbalpearls' ); ?> &middot; <?php printf( esc_html__( 'SAVE %d%%', 'herbalpearls' ), $discount ); ?></span>
-			</div>
-			<h1><?php the_title(); ?></h1>
+	<!-- Hero — matches front-page rhythm: script accent + serif h1 -->
+	<section class="hp-section hp-surface-1 text-center" aria-labelledby="hp-bundle-title">
+		<div class="hp-container max-w-3xl">
+			<span class="hp-tw-eyebrow mb-3">
+				<?php esc_html_e( 'Bundle', 'herbalpearls' ); ?> &middot;
+				<?php printf( esc_html__( 'Save %d%%', 'herbalpearls' ), $discount ); ?>
+			</span>
+			<h1 id="hp-bundle-title" class="hp-script mb-2 mt-2"><?php the_title(); ?></h1>
 			<?php if ( has_excerpt() ) : ?>
-				<p class="hp-bundle-hero__subtitle"><?php echo esc_html( get_the_excerpt() ); ?></p>
+				<p class="hp-subtitle mx-auto max-w-xl">
+					<?php echo esc_html( get_the_excerpt() ); ?>
+				</p>
 			<?php endif; ?>
 		</div>
 	</section>
 
 	<!-- Two-column layout: image + form -->
-	<section class="hp-section">
+	<section class="hp-section hp-surface-page">
 		<div class="hp-container">
-			<div class="hp-bundle-layout">
-				<div class="hp-bundle-layout__image">
-					<?php if ( has_post_thumbnail() ) : ?>
-						<?php the_post_thumbnail( 'hp-product-card', [ 'class' => 'hp-bundle-main-img' ] ); ?>
-					<?php endif; ?>
+			<div class="grid gap-8 lg:gap-12 md:grid-cols-2 items-start">
+
+				<!-- Sticky image column -->
+				<div class="md:sticky md:top-24">
+					<div class="rounded-lg overflow-hidden border border-hp-line-1 bg-hp-bg-pure aspect-square">
+						<?php if ( has_post_thumbnail() ) : ?>
+							<?php
+							the_post_thumbnail(
+								'hp-product-card',
+								[
+									'class'   => 'w-full h-full object-cover',
+									'alt'     => esc_attr( get_the_title() ),
+									'loading' => 'eager',
+									'fetchpriority' => 'high',
+								]
+							);
+							?>
+						<?php endif; ?>
+					</div>
 
 					<?php if ( $total_mrp > 0 ) : ?>
-						<div class="hp-bundle-price-card">
-							<div class="hp-bundle-price-card__label"><?php esc_html_e( 'Bundle Price', 'herbalpearls' ); ?></div>
-							<div class="hp-bundle-price-card__amount">
-								<span class="hp-bundle-price-card__mrp">₹<?php echo esc_html( number_format( $total_mrp, 0 ) ); ?></span>
-								<span class="hp-bundle-price-card__sale">₹<?php echo esc_html( number_format( $discounted_price, 0 ) ); ?></span>
+						<div class="mt-5 p-5 rounded-lg border-2 border-hp-gold-500 bg-hp-bg-pure text-center shadow-hp-sm">
+							<div class="text-[13px] font-medium uppercase tracking-wider text-hp-text-3 mb-2">
+								<?php esc_html_e( 'Bundle Price', 'herbalpearls' ); ?>
 							</div>
-							<div class="hp-bundle-price-card__save">
+							<div class="flex items-baseline justify-center gap-3 mb-1">
+								<span class="text-lg text-hp-text-4 line-through">
+									₹<?php echo esc_html( number_format( $total_mrp, 0 ) ); ?>
+								</span>
+								<span class="font-serif text-3xl font-bold text-hp-text-1 leading-none">
+									₹<?php echo esc_html( number_format( $discounted_price, 0 ) ); ?>
+								</span>
+							</div>
+							<div class="text-sm font-semibold text-hp-coral">
 								<?php printf( esc_html__( 'You save ₹%s', 'herbalpearls' ), number_format( $save_amount, 0 ) ); ?>
 							</div>
 						</div>
 					<?php endif; ?>
 
-					<!-- Trust strip -->
-					<div class="hp-bundle-trust hp-mt-1">
-						<div class="hp-trust-item">
-							<svg class="hp-trust-item__icon" width="18" height="18" viewBox="0 0 24 24" aria-hidden="true"><path d="M17 8C8 10 5.9 16.17 3.82 21.34l1.89.66.95-2.3c.48.17.98.3 1.34.3C19 20 22 3 22 3 17 5 13 9 13 15s-3 5-5 5c-.63 0-1.05-.05-1.63-.2" fill="none" stroke="currentColor" stroke-width="1.5"/></svg>
-							<span><?php esc_html_e( '100% Natural', 'herbalpearls' ); ?></span>
-						</div>
-						<div class="hp-trust-item">
-							<svg class="hp-trust-item__icon" width="18" height="18" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="10" fill="none" stroke="currentColor" stroke-width="1.5"/></svg>
-							<span><?php esc_html_e( 'Paraben Free', 'herbalpearls' ); ?></span>
-						</div>
-						<div class="hp-trust-item">
-							<svg class="hp-trust-item__icon" width="18" height="18" viewBox="0 0 24 24" aria-hidden="true"><path d="M21 12c0 5-4 9-9 9s-9-4-9-9 4-9 9-9" fill="none" stroke="currentColor" stroke-width="1.5"/></svg>
-							<span><?php esc_html_e( 'Cruelty Free', 'herbalpearls' ); ?></span>
-						</div>
+					<!-- Reuse the homepage trust strip component instead of re-implementing -->
+					<div class="mt-6">
+						<?php echo do_shortcode( '[hp_trust_strip]' ); ?>
 					</div>
 				</div>
 
-				<div class="hp-bundle-layout__form">
-					<h2><?php esc_html_e( 'What\'s Included', 'herbalpearls' ); ?></h2>
+				<!-- Form column -->
+				<div>
+					<div class="hp-section-h text-left mb-6">
+						<span class="hp-section-h__accent text-left">
+							<?php esc_html_e( 'what you get', 'herbalpearls' ); ?>
+						</span>
+						<h2 class="hp-section-h__title text-left text-[clamp(1.5rem,3vw,2rem)]">
+							<?php esc_html_e( "What's Included", 'herbalpearls' ); ?>
+						</h2>
+					</div>
 
-					<form id="hp-bundle-form" data-bundle-id="<?php echo esc_attr( $bundle_id ); ?>">
+					<form id="hp-bundle-form" data-bundle-id="<?php echo esc_attr( $bundle_id ); ?>" class="flex flex-col gap-3">
 						<?php foreach ( $valid_items as $item ) :
-							$product = $item['product'];
+							$product   = $item['product'];
 							$item_mrp  = $item['price'];
 							$item_sale = $item_mrp * ( 1 - $discount / 100 );
 							?>
-							<div class="hp-bundle-item">
-								<div class="hp-bundle-item__image">
-									<?php echo $product->get_image( 'thumbnail' ); // phpcs:ignore ?>
+							<div class="flex gap-4 p-4 bg-hp-bg-pure border border-hp-line-1 rounded-md items-center xs:flex-col xs:items-stretch sm:flex-row sm:items-center">
+								<div class="w-[72px] h-[72px] flex-shrink-0 rounded-md overflow-hidden bg-hp-bg-page">
+									<?php
+									$thumb_id = $product->get_image_id();
+									$thumb_alt = $thumb_id ? get_post_meta( $thumb_id, '_wp_attachment_image_alt', true ) : '';
+									if ( empty( $thumb_alt ) ) {
+										$thumb_alt = $product->get_name();
+									}
+									echo $product->get_image(
+										'thumbnail',
+										[
+											'class'   => 'w-full h-full object-cover',
+											'alt'     => esc_attr( $thumb_alt ),
+											'loading' => 'lazy',
+										]
+									); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+									?>
 								</div>
-								<div class="hp-bundle-item__info">
-									<h3 class="hp-bundle-item__name"><?php echo esc_html( $product->get_name() ); ?></h3>
-									<div class="hp-bundle-item__price">
-										<span class="hp-bundle-item__mrp">₹<?php echo esc_html( number_format( $item_mrp, 0 ) ); ?></span>
-										<span class="hp-bundle-item__sale">₹<?php echo esc_html( number_format( $item_sale, 0 ) ); ?></span>
-										<span class="hp-bundle-item__worth"><?php printf( esc_html__( 'Worth ₹%s', 'herbalpearls' ), number_format( $item_mrp, 0 ) ); ?></span>
+
+								<div class="flex-1 min-w-0">
+									<div class="flex items-start justify-between gap-2">
+										<h3 class="font-serif text-[15px] font-semibold text-hp-text-1 m-0 leading-tight">
+											<?php echo esc_html( $product->get_name() ); ?>
+										</h3>
+										<span class="text-[11px] font-medium text-hp-text-4 whitespace-nowrap">
+											<?php printf( esc_html__( 'Worth ₹%s', 'herbalpearls' ), number_format( $item_mrp, 0 ) ); ?>
+										</span>
+									</div>
+									<div class="flex items-baseline gap-2 mt-1 mb-2">
+										<span class="text-[13px] text-hp-text-4 line-through">
+											₹<?php echo esc_html( number_format( $item_mrp, 0 ) ); ?>
+										</span>
+										<span class="text-[15px] font-semibold text-hp-gold-700">
+											₹<?php echo esc_html( number_format( $item_sale, 0 ) ); ?>
+										</span>
 									</div>
 
 									<?php if ( $product->is_type( 'variable' ) ) : ?>
-										<label class="hp-bundle-item__label"><?php esc_html_e( 'Choose size:', 'herbalpearls' ); ?></label>
+										<label class="block text-[13px] font-medium text-hp-text-3 mb-1">
+											<?php esc_html_e( 'Choose size:', 'herbalpearls' ); ?>
+										</label>
 										<select
 											name="selections[<?php echo esc_attr( $product->get_id() ); ?>]"
 											required
-											class="hp-select"
+											class="hp-select w-full max-w-[280px]"
 										>
 											<option value="">&mdash; <?php esc_html_e( 'Select', 'herbalpearls' ); ?> &mdash;</option>
 											<?php foreach ( $product->get_available_variations() as $variation ) :
@@ -159,16 +209,17 @@ while ( have_posts() ) :
 							</div>
 						<?php endforeach; ?>
 
-						<button type="submit" class="hp-btn hp-btn--primary hp-btn--lg hp-btn--block hp-mt-2">
+						<button type="submit" class="hp-btn hp-btn--primary hp-btn--lg hp-btn--block mt-4">
 							<?php printf( esc_html__( 'Add Bundle to Cart — ₹%s', 'herbalpearls' ), number_format( $discounted_price, 0 ) ); ?>
 						</button>
-						<p class="hp-bundle-msg" aria-live="polite"></p>
+						<p class="hp-bundle-msg text-center text-sm min-h-[1.25rem] mt-2" aria-live="polite"></p>
 					</form>
 				</div>
 			</div>
 
-			<?php if ( $bundle_content = get_the_content() ) : ?>
-				<div class="hp-bundle-description hp-mt-3">
+			<?php $bundle_content = get_the_content();
+			if ( $bundle_content ) : ?>
+				<div class="max-w-prose-hp mx-auto pt-10 mt-12 border-t border-hp-line-1 prose prose-sm">
 					<?php echo wp_kses_post( wpautop( $bundle_content ) ); ?>
 				</div>
 			<?php endif; ?>
@@ -177,13 +228,13 @@ while ( have_posts() ) :
 
 	<?php /* Why This Bundle Works */ ?>
 	<?php if ( ! empty( $rationale ) ) : ?>
-		<section class="hp-section hp-surface-pure" aria-labelledby="hp-bundle-why-title">
+		<section class="hp-section hp-surface-1" aria-labelledby="hp-bundle-why-title">
 			<div class="hp-container">
 				<div class="hp-section-h">
 					<span class="hp-section-h__accent"><?php esc_html_e( 'the synergy', 'herbalpearls' ); ?></span>
 					<h2 id="hp-bundle-why-title" class="hp-section-h__title"><?php esc_html_e( 'Why This Bundle Works', 'herbalpearls' ); ?></h2>
 				</div>
-				<div class="hp-bundle-rationale">
+				<div class="max-w-prose-hp mx-auto text-base leading-relaxed text-hp-text-2">
 					<?php echo wp_kses_post( wpautop( $rationale ) ); ?>
 				</div>
 			</div>
@@ -198,7 +249,7 @@ while ( have_posts() ) :
 					<span class="hp-section-h__accent"><?php esc_html_e( 'your regimen', 'herbalpearls' ); ?></span>
 					<h2 id="hp-bundle-how-title" class="hp-section-h__title"><?php esc_html_e( 'How to Use Together', 'herbalpearls' ); ?></h2>
 				</div>
-				<div class="hp-steps-grid">
+				<div class="hp-tw-steps prose max-w-none">
 					<?php echo wp_kses_post( $protocol ); ?>
 				</div>
 			</div>
@@ -207,12 +258,13 @@ while ( have_posts() ) :
 
 	<?php /* FAQ accordion */ ?>
 	<?php if ( ! empty( $faqs ) ) : ?>
-		<section class="hp-section hp-surface-1" aria-labelledby="hp-bundle-faq-title">
-			<div class="hp-container">
+		<section class="hp-section hp-surface-2" aria-labelledby="hp-bundle-faq-title">
+			<div class="hp-container max-w-prose-hp">
 				<div class="hp-section-h">
+					<span class="hp-section-h__accent"><?php esc_html_e( 'good to know', 'herbalpearls' ); ?></span>
 					<h2 id="hp-bundle-faq-title" class="hp-section-h__title"><?php esc_html_e( 'Frequently Asked Questions', 'herbalpearls' ); ?></h2>
 				</div>
-				<div class="hp-accordion" data-accordion>
+				<div class="hp-accordion bg-hp-bg-pure rounded-lg border border-hp-line-1 px-5" data-accordion>
 					<?php foreach ( $faqs as $faq ) : ?>
 						<div class="hp-accordion__item">
 							<button type="button" class="hp-accordion__trigger" aria-expanded="false" data-accordion-trigger>
@@ -247,6 +299,7 @@ while ( have_posts() ) :
 		<section class="hp-section hp-surface-page" aria-labelledby="hp-bundle-cross-title">
 			<div class="hp-container">
 				<div class="hp-section-h">
+					<span class="hp-section-h__accent"><?php esc_html_e( 'more curated combos', 'herbalpearls' ); ?></span>
 					<h2 id="hp-bundle-cross-title" class="hp-section-h__title"><?php esc_html_e( 'Other Bundles You Might Like', 'herbalpearls' ); ?></h2>
 				</div>
 				<div class="hp-grid-3">
@@ -257,7 +310,7 @@ while ( have_posts() ) :
 						<div class="hp-bundle-card">
 							<div class="hp-bundle-card__image">
 								<a href="<?php echo esc_url( get_permalink( $bundle_post ) ); ?>">
-									<?php echo get_the_post_thumbnail( $bundle_post, 'hp-product-card' ); ?>
+									<?php echo get_the_post_thumbnail( $bundle_post, 'hp-product-card', [ 'alt' => esc_attr( $bundle_post->post_title ), 'loading' => 'lazy' ] ); ?>
 								</a>
 								<span class="hp-bundle-card__ribbon"><?php printf( esc_html__( 'Save %d%%', 'herbalpearls' ), $b_discount ); ?></span>
 							</div>
@@ -275,9 +328,10 @@ while ( have_posts() ) :
 												continue;
 											}
 											$shown++;
+											$bp_alt = $bp->get_name();
 											?>
 											<div class="hp-bundle-card__child-thumb">
-												<?php echo $bp->get_image( 'thumbnail' ); // phpcs:ignore ?>
+												<?php echo $bp->get_image( 'thumbnail', [ 'alt' => esc_attr( $bp_alt ), 'loading' => 'lazy' ] ); // phpcs:ignore ?>
 											</div>
 										<?php endforeach; ?>
 										<?php $remaining = count( $b_items ) - 3;
@@ -298,7 +352,7 @@ while ( have_posts() ) :
 	<?php endif; ?>
 
 	<?php /* Disclaimer */ ?>
-	<aside class="hp-disclaimer hp-mt-3">
+	<aside class="hp-tw-disclaimer hp-container">
 		<h4><?php esc_html_e( 'Disclaimer', 'herbalpearls' ); ?></h4>
 		<p><?php esc_html_e( 'Statements and product information have not been evaluated by any regulatory authority unless specified. Herbal Pearls products are intended for cosmetic use only and are not a substitute for medical advice, diagnosis, or treatment. Individual results may vary. Patch-test before first use.', 'herbalpearls' ); ?></p>
 	</aside>

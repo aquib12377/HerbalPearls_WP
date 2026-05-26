@@ -23,6 +23,7 @@ require HP_DIR . '/inc/shortcodes.php';
 require HP_DIR . '/inc/ajax.php';
 require HP_DIR . '/inc/admin.php';
 require HP_DIR . '/inc/seo-schema.php';
+require HP_DIR . '/inc/seo-meta.php';
 require HP_DIR . '/inc/bundles.php';
 require HP_DIR . '/inc/discounts.php';
 require HP_DIR . '/inc/reviews.php';

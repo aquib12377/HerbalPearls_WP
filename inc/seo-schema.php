@@ -128,6 +128,13 @@ add_action( 'wp_head', function() {
 	add_filter( 'rank_math/snippet/rich_snippet_product_entity', '__return_empty_array' );
 }, 30 );
 
+/* Suppress Rank Math FAQ + Article schemas — we emit our own (see below).
+ * Filter early so it always wins regardless of action priority. */
+add_filter( 'rank_math/snippet/rich_snippet_faqpage_entity', '__return_empty_array' );
+add_filter( 'rank_math/snippet/rich_snippet_article_entity', '__return_empty_array' );
+add_filter( 'rank_math/snippet/rich_snippet_blogposting_entity', '__return_empty_array' );
+add_filter( 'rank_math/snippet/rich_snippet_newsarticle_entity', '__return_empty_array' );
+
 /* ─────────────── BreadcrumbList (everywhere except home) ─────────────── */
 add_action( 'wp_head', function() {
 	if ( is_front_page() ) {

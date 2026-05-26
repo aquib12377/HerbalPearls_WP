@@ -86,3 +86,23 @@ add_action( 'wp', function() {
 		add_theme_support( 'wc-product-gallery-slider' );
 	}
 } );
+
+/* Product image alt fallback — use the product title when the
+ * attachment has no alt text set. Prevents empty alt="" on every
+ * shop archive image. */
+add_filter( 'wp_get_attachment_image_attributes', function( $attr, $attachment, $size ) {
+	if ( ! empty( $attr['alt'] ) ) {
+		return $attr;
+	}
+	if ( ! function_exists( 'wc_get_product' ) ) {
+		return $attr;
+	}
+	$parent = $attachment ? $attachment->post_parent : 0;
+	if ( $parent && 'product' === get_post_type( $parent ) ) {
+		$product = wc_get_product( $parent );
+		if ( $product ) {
+			$attr['alt'] = $product->get_name();
+		}
+	}
+	return $attr;
+}, 10, 3 );

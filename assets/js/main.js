@@ -105,9 +105,10 @@
 	const heroSlider = document.querySelector('[data-hero-slider]');
 	if (heroSlider) {
 		const slides = heroSlider.querySelectorAll('.hp-hero__slide');
+		const reduceMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 		let current = 0;
 
-		if (slides.length > 1) {
+		if (slides.length > 1 && !reduceMotion) {
 			setInterval(() => {
 				slides[current].setAttribute('hidden', '');
 				current = (current + 1) % slides.length;

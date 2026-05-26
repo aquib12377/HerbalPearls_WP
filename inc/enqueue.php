@@ -13,6 +13,11 @@ if ( ! defined( 'ABSPATH' ) ) {
 add_action( 'wp_enqueue_scripts', function() {
 	$v = HP_VERSION; // Use filemtime() in dev for cache-busting
 
+	/* ── Tailwind (loaded first so legacy .hp-* can override during migration) ── */
+	if ( file_exists( HP_DIR . '/assets/css/tailwind.css' ) ) {
+		wp_enqueue_style( 'hp-tailwind', HP_URI . '/assets/css/tailwind.css', [], $v );
+	}
+
 	/* ── Base cascade (all pages) ── */
 	wp_enqueue_style( 'hp-tokens',     HP_URI . '/assets/css/tokens.css',     [], $v );
 	wp_enqueue_style( 'hp-base',       HP_URI . '/assets/css/base.css',       [ 'hp-tokens' ], $v );
@@ -59,11 +64,15 @@ add_action( 'wp_enqueue_scripts', function() {
 	}
 
 	if ( is_singular( 'hp_bundle' ) ) {
-		wp_enqueue_script( 'hp-bundle', HP_URI . '/assets/js/bundle.js', [ 'jquery' ], $v, true );
-		wp_localize_script( 'hp-bundle', 'HP_BUNDLE', [
-			'ajaxurl' => admin_url( 'admin-ajax.php' ),
-			'nonce'   => wp_create_nonce( 'hp_add_bundle' ),
-		] );
+		wp_enqueue_script( 'hp-bundle', HP_URI . '/assets/js/bundle.js', [], $v, true );
+		wp_add_inline_script(
+			'hp-bundle',
+			'window.HP_BUNDLE = ' . wp_json_encode( [
+				'ajaxurl' => admin_url( 'admin-ajax.php' ),
+				'nonce'   => wp_create_nonce( 'hp_add_bundle' ),
+			] ) . ';',
+			'before'
+		);
 	}
 
 	if ( is_cart() ) {

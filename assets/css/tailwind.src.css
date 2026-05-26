@@ -1,0 +1,83 @@
+/**
+ * Herbal Pearls — Tailwind source.
+ * Compiled to ./assets/css/tailwind.css by `npm run build:css`.
+ *
+ * Loaded BEFORE the legacy .hp-* cascade so existing components
+ * can still override during the page-by-page migration. Preflight
+ * is disabled in tailwind.config.js to avoid clobbering base.css.
+ *
+ * @package HerbalPearls
+ */
+
+@tailwind components;
+@tailwind utilities;
+
+@layer components {
+
+	/* ============================================================
+	   HP — primitives that recur on rebuilt pages.
+	   Keep these tiny: they wrap utilities so PHP templates
+	   stay readable. Anything page-specific belongs in the
+	   template itself.
+	   ============================================================ */
+
+	.hp-tw-container {
+		@apply mx-auto w-full max-w-[1280px] px-4 md:px-8;
+	}
+
+	.hp-tw-section {
+		@apply py-[clamp(3rem,8vw,5rem)];
+	}
+
+	.hp-tw-section-h {
+		@apply text-center mb-[clamp(2rem,5vw,3rem)];
+	}
+
+	.hp-tw-section-h__accent {
+		@apply block font-script text-fluid-accent text-hp-gold-700 mb-1 leading-tight;
+	}
+
+	.hp-tw-section-h__title {
+		@apply font-serif text-fluid-title font-semibold text-hp-brown-900 m-0;
+	}
+
+	.hp-tw-card {
+		@apply bg-hp-bg-pure border border-hp-line-1 rounded-lg p-5 transition-[border-color,box-shadow] duration-200;
+	}
+
+	.hp-tw-card-hover {
+		@apply hover:border-hp-line-3 hover:shadow-hp-md;
+	}
+
+	/* Eyebrow chip — small badge above a heading */
+	.hp-tw-eyebrow {
+		@apply inline-flex items-center gap-1 px-3 py-1 rounded-pill text-[11px] font-bold uppercase tracking-wider bg-hp-gold-600 text-hp-on-gold;
+	}
+
+	/* Disclaimer — soft callout at the foot of legal-heavy pages */
+	.hp-tw-disclaimer {
+		@apply max-w-prose-hp mx-auto px-4 py-6 my-12 text-sm leading-relaxed text-hp-text-3 border-t border-hp-line-1;
+	}
+
+	.hp-tw-disclaimer h4 {
+		@apply text-hp-text-2 font-semibold mb-2 text-[13px] uppercase tracking-wider;
+	}
+
+	/* Steps grid — used for "How to use together" / regimens */
+	.hp-tw-steps {
+		@apply grid gap-4 md:grid-cols-2 lg:grid-cols-3 max-w-container-hp mx-auto;
+	}
+
+	.hp-tw-steps > * {
+		@apply bg-hp-bg-pure border border-hp-line-1 rounded-lg p-5;
+	}
+
+	.hp-tw-steps h3,
+	.hp-tw-steps h4 {
+		@apply font-serif text-hp-text-1 text-lg mb-2;
+	}
+
+	.hp-tw-steps p {
+		@apply text-hp-text-2 text-sm leading-relaxed;
+	}
+}

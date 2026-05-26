@@ -54,6 +54,12 @@ add_shortcode( 'hp_bestsellers', function( $atts ) {
 	$atts  = shortcode_atts( [ 'count' => 4 ], $atts, 'hp_bestsellers' );
 	$count = absint( $atts['count'] );
 
+	$cache_key = 'hp_bestsellers_' . $count;
+	$cached    = get_transient( $cache_key );
+	if ( false !== $cached ) {
+		return $cached;
+	}
+
 	$products = wc_get_products( [
 		'limit'   => $count,
 		'status'  => 'publish',
@@ -71,13 +77,22 @@ add_shortcode( 'hp_bestsellers', function( $atts ) {
 		wc_get_template_part( 'content', 'product', [ 'product' => $product ] );
 	}
 	echo '</div>';
-	return ob_get_clean();
+	$html = ob_get_clean();
+
+	set_transient( $cache_key, $html, HOUR_IN_SECONDS );
+	return $html;
 } );
 
 /* ─────────────── [hp_bundle_promo count="3"] ─────────────── */
 add_shortcode( 'hp_bundle_promo', function( $atts ) {
 	$atts  = shortcode_atts( [ 'count' => 3 ], $atts, 'hp_bundle_promo' );
 	$count = absint( $atts['count'] );
+
+	$cache_key = 'hp_bundle_promo_' . $count;
+	$cached    = get_transient( $cache_key );
+	if ( false !== $cached ) {
+		return $cached;
+	}
 
 	$bundles = get_posts( [
 		'post_type'      => 'hp_bundle',
@@ -119,13 +134,22 @@ add_shortcode( 'hp_bundle_promo', function( $atts ) {
 		<?php
 	}
 	echo '</div>';
-	return ob_get_clean();
+	$html = ob_get_clean();
+
+	set_transient( $cache_key, $html, HOUR_IN_SECONDS );
+	return $html;
 } );
 
 /* ─────────────── [hp_reviews_carousel count="3"] ─────────────── */
 add_shortcode( 'hp_reviews_carousel', function( $atts ) {
 	$atts  = shortcode_atts( [ 'count' => 3 ], $atts, 'hp_reviews_carousel' );
 	$count = absint( $atts['count'] );
+
+	$cache_key = 'hp_reviews_carousel_' . $count;
+	$cached    = get_transient( $cache_key );
+	if ( false !== $cached ) {
+		return $cached;
+	}
 
 	$reviews = get_comments( [
 		'post_type' => 'product',
@@ -170,13 +194,22 @@ add_shortcode( 'hp_reviews_carousel', function( $atts ) {
 		<?php
 	}
 	echo '</div>';
-	return ob_get_clean();
+	$html = ob_get_clean();
+
+	set_transient( $cache_key, $html, HOUR_IN_SECONDS );
+	return $html;
 } );
 
 /* ─────────────── [hp_blog_highlight count="3"] ─────────────── */
 add_shortcode( 'hp_blog_highlight', function( $atts ) {
 	$atts  = shortcode_atts( [ 'count' => 3 ], $atts, 'hp_blog_highlight' );
 	$count = absint( $atts['count'] );
+
+	$cache_key = 'hp_blog_highlight_' . $count;
+	$cached    = get_transient( $cache_key );
+	if ( false !== $cached ) {
+		return $cached;
+	}
 
 	$posts = get_posts( [
 		'post_type'      => 'post',
@@ -218,8 +251,24 @@ add_shortcode( 'hp_blog_highlight', function( $atts ) {
 		<?php
 	}
 	echo '</div>';
-	return ob_get_clean();
+	$html = ob_get_clean();
+
+	set_transient( $cache_key, $html, HOUR_IN_SECONDS );
+	return $html;
 } );
+
+/* ─────────────── Cache busting for shortcode transients ─────────────── */
+add_action( 'save_post',     'hp_flush_shortcode_caches' );
+add_action( 'deleted_post',  'hp_flush_shortcode_caches' );
+add_action( 'comment_post',  'hp_flush_shortcode_caches' );
+add_action( 'edit_comment',  'hp_flush_shortcode_caches' );
+add_action( 'trashed_comment', 'hp_flush_shortcode_caches' );
+add_action( 'woocommerce_update_product', 'hp_flush_shortcode_caches' );
+
+function hp_flush_shortcode_caches() {
+	global $wpdb;
+	$wpdb->query( "DELETE FROM {$wpdb->options} WHERE option_name LIKE '_transient_hp_bestsellers_%' OR option_name LIKE '_transient_hp_bundle_promo_%' OR option_name LIKE '_transient_hp_reviews_carousel_%' OR option_name LIKE '_transient_hp_blog_highlight_%' OR option_name LIKE '_transient_timeout_hp_bestsellers_%' OR option_name LIKE '_transient_timeout_hp_bundle_promo_%' OR option_name LIKE '_transient_timeout_hp_reviews_carousel_%' OR option_name LIKE '_transient_timeout_hp_blog_highlight_%'" );
+}
 
 /* ─────────────── [hp_current_year] ─────────────── */
 add_shortcode( 'hp_current_year', function() {

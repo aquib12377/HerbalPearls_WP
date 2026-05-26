@@ -15,7 +15,7 @@ add_action( 'wp_head', function() {
 	if ( is_admin() ) {
 		return;
 	}
-	if ( ! is_front_page() && ! is_product() && ! is_shop() ) {
+	if ( ! is_front_page() && ! is_product() && ! is_shop() && ! is_singular( 'hp_bundle' ) ) {
 		return;
 	}
 	$file = HP_DIR . '/assets/css/critical.css';
@@ -25,30 +25,46 @@ add_action( 'wp_head', function() {
 	echo '<style id="hp-critical">' . file_get_contents( $file ) . '</style>' . "\n"; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped — raw CSS from project file
 }, 5 );
 
-/* Inject @font-face declarations — only for .ttf fonts that exist on disk */
+/* Inject @font-face declarations — prefer WOFF2 over TTF when both exist.
+ * Once the user converts the .ttf files to subset .woff2, no code change is needed.
+ */
 add_action( 'wp_head', function() {
-	$fonts = [
-		'cormorant-garamond-400.ttf'  => [ 'family' => 'Cormorant Garamond', 'weight' => '400', 'style' => 'normal' ],
-		'cormorant-garamond-600.ttf'  => [ 'family' => 'Cormorant Garamond', 'weight' => '600', 'style' => 'normal' ],
-		'cormorant-garamond-400i.ttf' => [ 'family' => 'Cormorant Garamond', 'weight' => '400', 'style' => 'italic' ],
-		'inter-400.ttf'               => [ 'family' => 'Inter',              'weight' => '400', 'style' => 'normal' ],
-		'inter-600.ttf'               => [ 'family' => 'Inter',              'weight' => '600', 'style' => 'normal' ],
-		'allura-400.ttf'              => [ 'family' => 'Allura',             'weight' => '400', 'style' => 'normal' ],
+	$faces = [
+		'cormorant-garamond-400'  => [ 'family' => 'Cormorant Garamond', 'weight' => '400', 'style' => 'normal' ],
+		'cormorant-garamond-600'  => [ 'family' => 'Cormorant Garamond', 'weight' => '600', 'style' => 'normal' ],
+		'cormorant-garamond-400i' => [ 'family' => 'Cormorant Garamond', 'weight' => '400', 'style' => 'italic' ],
+		'inter-400'               => [ 'family' => 'Inter',              'weight' => '400', 'style' => 'normal' ],
+		'inter-600'               => [ 'family' => 'Inter',              'weight' => '600', 'style' => 'normal' ],
+		'allura-400'              => [ 'family' => 'Allura',             'weight' => '400', 'style' => 'normal' ],
 	];
 
+	$format_map = [ 'woff2' => 'woff2', 'woff' => 'woff', 'ttf' => 'truetype' ];
+
 	$css = '';
-	foreach ( $fonts as $filename => $meta ) {
-		$file_path = HP_DIR . '/assets/fonts/' . $filename;
-		if ( file_exists( $file_path ) ) {
-			$css .= sprintf(
-				"@font-face{font-family:'%s';src:url('%s/assets/fonts/%s') format('truetype');font-weight:%s;font-style:%s;font-display:swap;}\n",
-				$meta['family'],
-				HP_URI,
-				$filename,
-				$meta['weight'],
-				$meta['style']
-			);
+	foreach ( $faces as $stem => $meta ) {
+		$sources = [];
+		foreach ( $format_map as $ext => $format ) {
+			$file_path = HP_DIR . '/assets/fonts/' . $stem . '.' . $ext;
+			if ( file_exists( $file_path ) ) {
+				$sources[] = sprintf(
+					"url('%s/assets/fonts/%s.%s') format('%s')",
+					HP_URI,
+					$stem,
+					$ext,
+					$format
+				);
+			}
 		}
+		if ( empty( $sources ) ) {
+			continue;
+		}
+		$css .= sprintf(
+			"@font-face{font-family:'%s';src:%s;font-weight:%s;font-style:%s;font-display:swap;}\n",
+			$meta['family'],
+			implode( ',', $sources ),
+			$meta['weight'],
+			$meta['style']
+		);
 	}
 
 	if ( '' !== $css ) {
@@ -56,24 +72,29 @@ add_action( 'wp_head', function() {
 	}
 }, 1 );
 
-/* Preload hero fonts + LCP image — only emit if files exist */
+/* Preload hero fonts + LCP image — only emit if files exist.
+ * Prefer .woff2 over .ttf when both exist (smaller, modern browser support).
+ */
 add_action( 'wp_head', function() {
-	$fonts = [
-		'cormorant-garamond-600.ttf' => 'font/ttf',
-		'inter-400.ttf'              => 'font/ttf',
+	// Each entry: [ filename, mime-type ]. The first available variant per
+	// family wins so we never preload both a .ttf and a .woff2 for the same face.
+	$preload_candidates = [
+		'cormorant-garamond-600' => [ 'woff2', 'ttf' ],
+		'inter-400'              => [ 'woff2', 'ttf' ],
+	];
+	$mime = [
+		'woff2' => 'font/woff2',
+		'ttf'   => 'font/ttf',
 	];
 
-	foreach ( $fonts as $filename => $type ) {
-		$file_path = HP_DIR . '/assets/fonts/' . $filename;
-		if ( file_exists( $file_path ) ) {
-			echo '<link rel="preload" href="' . esc_url( HP_URI . '/assets/fonts/' . $filename ) . '" as="font" type="' . esc_attr( $type ) . '" crossorigin>' . "\n";
-		}
-	}
-
-	if ( is_front_page() ) {
-		$hero_path = HP_DIR . '/assets/images/hero-banner.webp';
-		if ( file_exists( $hero_path ) ) {
-			echo '<link rel="preload" as="image" href="' . esc_url( HP_URI . '/assets/images/hero-banner.webp' ) . '" fetchpriority="high">' . "\n";
+	foreach ( $preload_candidates as $stem => $exts ) {
+		foreach ( $exts as $ext ) {
+			$filename  = $stem . '.' . $ext;
+			$file_path = HP_DIR . '/assets/fonts/' . $filename;
+			if ( file_exists( $file_path ) ) {
+				echo '<link rel="preload" href="' . esc_url( HP_URI . '/assets/fonts/' . $filename ) . '" as="font" type="' . esc_attr( $mime[ $ext ] ) . '" crossorigin>' . "\n";
+				break; // only one preload per family
+			}
 		}
 	}
 }, 1 );
