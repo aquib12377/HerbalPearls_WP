@@ -203,18 +203,155 @@
 
 
 /* ============================================================
-   GALLERY
+   PDP DETAILS ACCORDION — inline, no surface band
+   Sits right after the buy form so the page stays compact for
+   products with limited copy.
    ============================================================ */
 
-/* White card with padding so product breathes */
-.woocommerce-product-gallery {
-	padding: 2rem;
+.hp-pdp__details {
+	padding-block: 1.5rem 2rem;
 }
 
-@media (max-width: 640px) {
-	.woocommerce-product-gallery {
+@media (min-width: 768px) {
+	.hp-pdp__details {
+		padding-block: 2rem 2.5rem;
+	}
+}
+
+/* ============================================================
+   GALLERY — single product page
+   Square image area via padding-top:100% on the .__image wrapper
+   (most reliable against flexslider's inline styles, which override
+   aspect-ratio in some browser+WC version combos). Sale badge and
+   zoom trigger sit ON the image, not in the card padding.
+   ============================================================ */
+
+.woocommerce div.product .woocommerce-product-gallery {
+	position: relative;
+	padding: 0.75rem;
+}
+
+@media (min-width: 640px) {
+	.woocommerce div.product .woocommerce-product-gallery {
 		padding: 1rem;
 	}
+}
+
+.woocommerce div.product .woocommerce-product-gallery__wrapper {
+	margin: 0;
+	position: relative;
+}
+
+/* Square image area — padding-top is bulletproof against flexslider */
+.woocommerce div.product .woocommerce-product-gallery__image {
+	position: relative;
+	display: block;
+	overflow: hidden;
+	border-radius: 8px;
+	background: var(--hp-bg-page);
+}
+
+.woocommerce div.product .woocommerce-product-gallery__image::before {
+	content: '';
+	display: block;
+	padding-top: 100%;
+}
+
+.woocommerce div.product .woocommerce-product-gallery__image > a {
+	position: absolute;
+	inset: 0;
+	display: block;
+	margin: 0;
+}
+
+/* Image fills the square. !important is necessary to overrule
+ * flexslider's inline width/height styles. */
+.woocommerce div.product .woocommerce-product-gallery__image img {
+	position: absolute !important;
+	inset: 0 !important;
+	width: 100% !important;
+	height: 100% !important;
+	max-width: none !important;
+	object-fit: cover;
+	margin: 0;
+}
+
+/* Sale badge — anchored to the gallery card, sits on the image edge */
+.woocommerce div.product .onsale,
+.woocommerce-product-gallery .onsale {
+	position: absolute;
+	top: calc(0.75rem + 10px);
+	left: calc(0.75rem + 10px);
+	z-index: 3;
+	background: var(--hp-coral);
+	color: #FFFFFF;
+	font-size: 0.6875rem;
+	font-weight: 700;
+	text-transform: uppercase;
+	letter-spacing: 0.04em;
+	padding: 0.25rem 0.625rem;
+	border-radius: 100px;
+	min-height: auto;
+	min-width: auto;
+	line-height: 1.6;
+	right: auto;
+	bottom: auto;
+	margin: 0;
+}
+
+@media (min-width: 640px) {
+	.woocommerce div.product .onsale,
+	.woocommerce-product-gallery .onsale {
+		top: calc(1rem + 10px);
+		left: calc(1rem + 10px);
+	}
+}
+
+/* Zoom trigger — circular chrome at top-right of the image */
+.woocommerce-product-gallery__trigger {
+	position: absolute;
+	top: calc(0.75rem + 10px);
+	right: calc(0.75rem + 10px);
+	z-index: 3;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	width: 36px;
+	height: 36px;
+	border-radius: 50%;
+	background: var(--hp-bg-pure);
+	color: var(--hp-text-1);
+	font-size: 1rem;
+	text-decoration: none;
+	box-shadow: var(--hp-shadow-md);
+	border: 1px solid var(--hp-line-1);
+	transition: background 0.15s, color 0.15s;
+}
+
+.woocommerce-product-gallery__trigger:hover,
+.woocommerce-product-gallery__trigger:focus {
+	background: var(--hp-gold-600);
+	color: var(--hp-text-on-gold);
+	border-color: var(--hp-gold-600);
+}
+
+@media (min-width: 640px) {
+	.woocommerce-product-gallery__trigger {
+		top: calc(1rem + 10px);
+		right: calc(1rem + 10px);
+	}
+}
+
+/* Thumbnail strip — compact horizontal scroll under the main image */
+.woocommerce div.product .flex-control-thumbs {
+	margin-top: 0.625rem;
+	padding: 0;
+	gap: 6px;
+}
+
+.woocommerce div.product .flex-control-thumbs li img {
+	width: 56px;
+	height: 56px;
 }
 
 /* Gold border on active thumbnail */
