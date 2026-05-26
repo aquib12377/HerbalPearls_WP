@@ -30,12 +30,10 @@ while ( have_posts() ) :
 
 	$product_id = $product->get_id();
 
-	// Calculate savings for display
+	// Prices for the mobile sticky bar (price.php handles main display + save badge)
 	$regular_price = (float) $product->get_regular_price();
 	$sale_price    = (float) $product->get_sale_price();
 	$has_sale      = $product->is_on_sale() && $regular_price > 0;
-	$save_amount   = $has_sale ? $regular_price - $sale_price : 0;
-	$save_pct      = $has_sale ? round( ( $save_amount / $regular_price ) * 100 ) : 0;
 	?>
 
 	<!-- Breadcrumb row -->
@@ -100,28 +98,9 @@ while ( have_posts() ) :
 				}
 			}
 
-			// Price with save badge
+			// Price + save badge + tax note (all rendered by single-product/price.php)
 			wc_get_template( 'single-product/price.php' );
 
-			if ( $has_sale && $save_amount > 0 ) :
-				?>
-				<p class="hp-save-badge">
-					<?php
-					printf(
-						/* translators: 1: amount saved, 2: percentage saved */
-						esc_html__( 'You save %1$s (%2$d%%)', 'herbalpearls' ),
-						wp_strip_all_tags( wc_price( $save_amount ) ),
-						absint( $save_pct )
-					);
-					?>
-				</p>
-			<?php endif; ?>
-
-			<p class="hp-tax-note">
-				<?php esc_html_e( 'Inclusive of all taxes.', 'herbalpearls' ); ?>
-			</p>
-
-			<?php
 			// Short description
 			$short_desc = $product->get_short_description();
 			if ( $short_desc ) {

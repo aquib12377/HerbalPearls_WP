@@ -203,18 +203,128 @@
 
 
 /* ============================================================
-   GALLERY
+   GALLERY — single product page
+   Forces a square aspect ratio on the image area (the WC flexslider
+   adds inline styles to the <img>, so we anchor aspect-ratio to a
+   wrapper instead). Positions sale badge top-left and zoom trigger
+   top-right inside the image so they don't sit in the card padding.
    ============================================================ */
 
-/* White card with padding so product breathes */
-.woocommerce-product-gallery {
-	padding: 2rem;
+.woocommerce div.product .woocommerce-product-gallery {
+	position: relative;
+	padding: 1rem;
 }
 
-@media (max-width: 640px) {
-	.woocommerce-product-gallery {
-		padding: 1rem;
+@media (min-width: 640px) {
+	.woocommerce div.product .woocommerce-product-gallery {
+		padding: 1.25rem;
 	}
+}
+
+/* The slider wrapper + first image stay block-level so flexslider
+ * doesn't collapse — but each gallery image is locked to 1:1. */
+.woocommerce div.product .woocommerce-product-gallery__wrapper {
+	margin: 0;
+	position: relative;
+}
+
+.woocommerce div.product .woocommerce-product-gallery__image,
+.woocommerce div.product .woocommerce-product-gallery__image > a {
+	display: block;
+	aspect-ratio: 1 / 1;
+	overflow: hidden;
+	border-radius: 10px;
+	background: var(--hp-bg-page);
+	position: relative;
+}
+
+.woocommerce div.product .woocommerce-product-gallery__image > a {
+	margin: 0;
+	border-radius: 0;
+}
+
+/* Image fills the square wrapper. Tap inline styles flexslider adds
+ * (height: auto, width: 100%) so they don't break the aspect ratio. */
+.woocommerce div.product .woocommerce-product-gallery__image img {
+	position: absolute;
+	inset: 0;
+	width: 100%;
+	height: 100%;
+	max-width: none;
+	object-fit: cover;
+	margin: 0;
+}
+
+/* Sale badge — anchor to the gallery image, not the card padding */
+.woocommerce div.product .onsale,
+.woocommerce-product-gallery .onsale {
+	position: absolute;
+	top: calc(1rem + 10px);
+	left: calc(1rem + 10px);
+	z-index: 3;
+	background: var(--hp-coral);
+	color: #FFFFFF;
+	font-size: 0.6875rem;
+	font-weight: 700;
+	text-transform: uppercase;
+	letter-spacing: 0.04em;
+	padding: 0.25rem 0.625rem;
+	border-radius: 100px;
+	min-height: auto;
+	min-width: auto;
+	line-height: 1.6;
+	right: auto;
+	bottom: auto;
+	margin: 0;
+}
+
+@media (min-width: 640px) {
+	.woocommerce div.product .onsale,
+	.woocommerce-product-gallery .onsale {
+		top: calc(1.25rem + 10px);
+		left: calc(1.25rem + 10px);
+	}
+}
+
+/* Zoom trigger — circular chrome at top-right of the image */
+.woocommerce-product-gallery__trigger {
+	position: absolute;
+	top: calc(1rem + 10px);
+	right: calc(1rem + 10px);
+	z-index: 3;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	width: 36px;
+	height: 36px;
+	border-radius: 50%;
+	background: var(--hp-bg-pure);
+	color: var(--hp-text-1);
+	font-size: 1rem;
+	text-decoration: none;
+	box-shadow: var(--hp-shadow-md);
+	border: 1px solid var(--hp-line-1);
+	transition: background 0.15s, color 0.15s;
+}
+
+.woocommerce-product-gallery__trigger:hover,
+.woocommerce-product-gallery__trigger:focus {
+	background: var(--hp-gold-600);
+	color: var(--hp-text-on-gold);
+	border-color: var(--hp-gold-600);
+}
+
+@media (min-width: 640px) {
+	.woocommerce-product-gallery__trigger {
+		top: calc(1.25rem + 10px);
+		right: calc(1.25rem + 10px);
+	}
+}
+
+/* Thumbnail strip — horizontal scroll under the main image */
+.woocommerce div.product .flex-control-thumbs {
+	margin-top: 0.75rem;
+	padding: 0;
 }
 
 /* Gold border on active thumbnail */
