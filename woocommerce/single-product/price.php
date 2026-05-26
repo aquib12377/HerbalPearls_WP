@@ -26,7 +26,7 @@ if ( ! $product instanceof WC_Product ) {
 		if ( $min_regular !== $min_sale ) :
 			// On sale
 			?>
-			<p class="price" style="font-size: 1.5rem;">
+			<p class="price">
 				<del aria-label="<?php esc_attr_e( 'Regular price', 'herbalpearls' ); ?>">
 					<?php echo wp_kses_post( hp_inr( (float) $min_regular ) ); ?>
 				</del>
@@ -53,7 +53,7 @@ if ( ! $product instanceof WC_Product ) {
 				?>
 			</p>
 		<?php else : ?>
-			<p class="price" style="font-size: 1.5rem;">
+			<p class="price">
 				<?php echo wp_kses_post( hp_inr( (float) $min_regular ) ); ?>
 				<?php if ( $min_regular !== $max_regular ) : ?>
 					&ndash; <?php echo wp_kses_post( hp_inr( (float) $max_regular ) ); ?>
@@ -89,7 +89,7 @@ if ( ! $product instanceof WC_Product ) {
 		</p>
 	<?php endif; ?>
 
-	<p class="hp-tax-note" style="font-size: 0.8125rem; color: var(--hp-text-4);">
+	<p class="hp-tax-note">
 		<?php esc_html_e( 'Inclusive of all taxes.', 'herbalpearls' ); ?>
 	</p>
 </div>

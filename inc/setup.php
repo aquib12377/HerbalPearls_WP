@@ -64,14 +64,27 @@ add_action( 'customize_register', function( $wp_customize ) {
 	] );
 
 	for ( $i = 1; $i <= 3; $i++ ) {
-		// Banner image URL
+		// Banner image — attachment ID (preferred, enables srcset/sizes)
+		$wp_customize->add_setting( "hp_hero_image_id_$i", [
+			'default'           => 0,
+			'sanitize_callback' => 'absint',
+		] );
+		$wp_customize->add_control(
+			new WP_Customize_Media_Control( $wp_customize, "hp_hero_image_id_$i", [
+				'label'     => sprintf( __( 'Slide %d — Banner Image (recommended)', 'herbalpearls' ), $i ),
+				'section'   => 'hp_hero',
+				'mime_type' => 'image',
+			] )
+		);
+
+		// Legacy fallback — banner image URL (used only if no attachment ID set)
 		$wp_customize->add_setting( "hp_hero_image_url_$i", [
 			'default'           => '',
 			'sanitize_callback' => 'esc_url_raw',
 		] );
 		$wp_customize->add_control( "hp_hero_image_url_$i", [
-			'label'       => sprintf( __( 'Slide %d — Banner Image URL', 'herbalpearls' ), $i ),
-			'description' => __( 'Upload the image in Media → Add New, copy the File URL, and paste it here.', 'herbalpearls' ),
+			'label'       => sprintf( __( 'Slide %d — Image URL (fallback)', 'herbalpearls' ), $i ),
+			'description' => __( 'Only used if no media image is selected above. Prefer the media picker for responsive images.', 'herbalpearls' ),
 			'section'     => 'hp_hero',
 			'type'        => 'url',
 		] );

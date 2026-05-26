@@ -29,12 +29,14 @@ get_header();
 <!-- [3] Hero Banner -->
 <?php
 // Build enabled slides from Customizer data.
-// Image is a plain URL (no class dependencies — works on every host).
+// Prefer attachment ID (responsive srcset); fall back to plain URL for back-compat.
 $hero_slides = [];
 for ( $i = 1; $i <= 3; $i++ ) {
+	$img_id  = absint( get_theme_mod( "hp_hero_image_id_$i", 0 ) );
 	$img_url = get_theme_mod( "hp_hero_image_url_$i", '' );
-	if ( $img_url ) {
+	if ( $img_id || $img_url ) {
 		$hero_slides[ $i ] = [
+			'img_id'    => $img_id,
 			'img_url'   => $img_url,
 			'headline'  => get_theme_mod( "hp_hero_headline_$i", '' ),
 			'subtitle'  => get_theme_mod( "hp_hero_subtitle_$i", '' ),
@@ -50,13 +52,23 @@ $has_slides = ! empty( $hero_slides );
 		<?php if ( $has_slides ) : ?>
 			<?php $idx = 0; foreach ( $hero_slides as $slide ) : ?>
 				<div class="hp-hero__slide" <?php echo ( 0 === $idx ) ? '' : 'hidden'; ?>>
-					<?php if ( $slide['img_url'] ) : ?>
+					<?php if ( ! empty( $slide['img_id'] ) ) :
+						$attr = [
+							'class'         => '',
+							'alt'           => $slide['headline'] ?: get_bloginfo( 'name' ),
+							'fetchpriority' => ( 0 === $idx ) ? 'high' : 'low',
+							'loading'       => ( 0 === $idx ) ? 'eager' : 'lazy',
+							'sizes'         => '100vw',
+						];
+						echo wp_get_attachment_image( $slide['img_id'], 'hp-banner', false, $attr ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+					elseif ( ! empty( $slide['img_url'] ) ) : ?>
 						<img
 							src="<?php echo esc_url( $slide['img_url'] ); ?>"
-							alt=""
+							alt="<?php echo esc_attr( $slide['headline'] ?: get_bloginfo( 'name' ) ); ?>"
 							width="1920"
 							height="720"
 							fetchpriority="<?php echo ( 0 === $idx ) ? 'high' : 'low'; ?>"
+							loading="<?php echo ( 0 === $idx ) ? 'eager' : 'lazy'; ?>"
 						>
 					<?php endif; ?>
 					<div class="hp-hero__content">
