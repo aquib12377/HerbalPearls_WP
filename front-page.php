@@ -148,9 +148,10 @@ $has_slides = ! empty( $hero_slides );
 <!-- [5] Category Triptych — bg-page -->
 <section class="hp-section">
 	<div class="hp-container">
-		<h2 class="hp-text-center hp-mb-2">
-			<?php esc_html_e( 'Shop by Category', 'herbalpearls' ); ?>
-		</h2>
+		<div class="hp-section-h">
+			<span class="hp-section-h__accent"><?php esc_html_e( 'explore', 'herbalpearls' ); ?></span>
+			<h2 class="hp-section-h__title"><?php esc_html_e( 'Shop by Category', 'herbalpearls' ); ?></h2>
+		</div>
 		<div class="hp-grid-3">
 			<?php
 			$categories = [ 'skin' => 'Skin', 'hair' => 'Hair', 'wellness' => 'Wellness' ];
@@ -159,13 +160,17 @@ $has_slides = ! empty( $hero_slides );
 				$url  = $term && ! is_wp_error( $term ) ? get_term_link( $term ) : '#';
 				$img_id = $term ? get_term_meta( $term->term_id, 'thumbnail_id', true ) : 0;
 				?>
-				<a href="<?php echo esc_url( $url ); ?>" class="hp-card hp-card--hover hp-text-center hp-surface-pure">
+				<a href="<?php echo esc_url( $url ); ?>" class="hp-cat-card" aria-label="<?php /* translators: %s: category name */ echo esc_attr( sprintf( __( 'Shop %s', 'herbalpearls' ), $label ) ); ?>">
 					<?php if ( $img_id ) : ?>
-						<?php echo wp_get_attachment_image( $img_id, 'hp-product-card', false, [ 'style' => 'border-radius:8px;margin-bottom:1rem;' ] ); ?>
+						<?php echo wp_get_attachment_image( $img_id, 'hp-product-card', false, [ 'class' => 'hp-cat-card__img', 'alt' => $label, 'loading' => 'lazy', 'sizes' => '(min-width: 600px) 33vw, 100vw' ] ); ?>
 					<?php endif; ?>
-					<h3><?php echo esc_html( $label ); ?></h3>
-					<span class="hp-btn hp-btn--ghost hp-mt-1">
-						<?php esc_html_e( 'Explore', 'herbalpearls' ); ?> &rarr;
+					<span class="hp-cat-card__overlay" aria-hidden="true"></span>
+					<span class="hp-cat-card__content">
+						<span class="hp-cat-card__title"><?php echo esc_html( $label ); ?></span>
+						<span class="hp-cat-card__cta">
+							<?php esc_html_e( 'Shop Now', 'herbalpearls' ); ?>
+							<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+						</span>
 					</span>
 				</a>
 			<?php endforeach; ?>
@@ -176,9 +181,10 @@ $has_slides = ! empty( $hero_slides );
 <!-- [6] Bestsellers — bg-2 (deeper champagne band) -->
 <section class="hp-section hp-surface-2">
 	<div class="hp-container">
-		<h2 class="hp-text-center hp-mb-2">
-			<?php esc_html_e( 'Bestsellers', 'herbalpearls' ); ?>
-		</h2>
+		<div class="hp-section-h">
+			<span class="hp-section-h__accent"><?php esc_html_e( 'most loved', 'herbalpearls' ); ?></span>
+			<h2 class="hp-section-h__title"><?php esc_html_e( 'Bestsellers', 'herbalpearls' ); ?></h2>
+		</div>
 		<?php echo do_shortcode( '[hp_bestsellers count="4"]' ); ?>
 	</div>
 </section>
@@ -186,8 +192,9 @@ $has_slides = ! empty( $hero_slides );
 <!-- [7] Bundle Promo — bg-page -->
 <section class="hp-section hp-surface-page">
 	<div class="hp-container">
-		<div class="hp-text-center hp-mb-2">
-			<h2><?php esc_html_e( 'Save 10% on Curated Combos', 'herbalpearls' ); ?></h2>
+		<div class="hp-section-h">
+			<span class="hp-section-h__accent"><?php esc_html_e( 'save more', 'herbalpearls' ); ?></span>
+			<h2 class="hp-section-h__title"><?php esc_html_e( 'Save 10% on Curated Combos', 'herbalpearls' ); ?></h2>
 			<p class="hp-subtitle hp-mt-1">
 				<?php esc_html_e( 'Hand-picked bundles for every routine.', 'herbalpearls' ); ?>
 			</p>
@@ -199,8 +206,9 @@ $has_slides = ! empty( $hero_slides );
 <!-- [8] Ingredient Story — alternating bg-1 → bg-pure → bg-1 -->
 <section class="hp-section hp-surface-1">
 	<div class="hp-container">
-		<div class="hp-text-center hp-mb-2">
-			<h2><?php esc_html_e( 'Ingredients That Work', 'herbalpearls' ); ?></h2>
+		<div class="hp-section-h">
+			<span class="hp-section-h__accent"><?php esc_html_e( 'pure & potent', 'herbalpearls' ); ?></span>
+			<h2 class="hp-section-h__title"><?php esc_html_e( 'Ingredients That Work', 'herbalpearls' ); ?></h2>
 			<p class="hp-subtitle hp-mt-1">
 				<?php esc_html_e( 'Each ingredient is chosen for a reason.', 'herbalpearls' ); ?>
 			</p>
@@ -249,9 +257,10 @@ $has_slides = ! empty( $hero_slides );
 <!-- [9] Reviews — bg-2 -->
 <section class="hp-section hp-surface-2">
 	<div class="hp-container">
-		<h2 class="hp-text-center hp-mb-2">
-			<?php esc_html_e( 'What Our Customers Say', 'herbalpearls' ); ?>
-		</h2>
+		<div class="hp-section-h">
+			<span class="hp-section-h__accent"><?php esc_html_e( 'kind words', 'herbalpearls' ); ?></span>
+			<h2 class="hp-section-h__title"><?php esc_html_e( 'What Our Customers Say', 'herbalpearls' ); ?></h2>
+		</div>
 		<?php echo do_shortcode( '[hp_reviews_carousel count="3"]' ); ?>
 	</div>
 </section>
@@ -259,9 +268,10 @@ $has_slides = ! empty( $hero_slides );
 <!-- [10] Blog Highlight — bg-page -->
 <section class="hp-section hp-surface-page">
 	<div class="hp-container">
-		<h2 class="hp-text-center hp-mb-2">
-			<?php esc_html_e( 'From Our Blog', 'herbalpearls' ); ?>
-		</h2>
+		<div class="hp-section-h">
+			<span class="hp-section-h__accent"><?php esc_html_e( 'the journal', 'herbalpearls' ); ?></span>
+			<h2 class="hp-section-h__title"><?php esc_html_e( 'From Our Blog', 'herbalpearls' ); ?></h2>
+		</div>
 		<?php echo do_shortcode( '[hp_blog_highlight count="3"]' ); ?>
 		<div class="hp-text-center hp-mt-2">
 			<a href="<?php echo esc_url( get_permalink( get_option( 'page_for_posts' ) ) ); ?>" class="hp-btn hp-btn--secondary">
@@ -274,7 +284,8 @@ $has_slides = ! empty( $hero_slides );
 <!-- [11] Newsletter — bg-3 sandstone -->
 <section class="hp-section hp-surface-3">
 	<div class="hp-container hp-text-center">
-		<h2><?php esc_html_e( 'Get 5% Off Your First Order', 'herbalpearls' ); ?></h2>
+		<span class="hp-section-h__accent"><?php esc_html_e( 'stay in touch', 'herbalpearls' ); ?></span>
+		<h2 class="hp-section-h__title"><?php esc_html_e( 'Get 5% Off Your First Order', 'herbalpearls' ); ?></h2>
 		<p class="hp-subtitle hp-mt-1">
 			<?php esc_html_e( 'Skincare tips, new launches, and exclusive offers — no spam, ever.', 'herbalpearls' ); ?>
 		</p>
