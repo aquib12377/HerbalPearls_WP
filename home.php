@@ -74,7 +74,7 @@ get_header();
 			] ); ?>
 
 		<?php else : ?>
-			<div class="hp-text-center hp-surface-pure hp-card" style="max-width:480px;margin-inline:auto;">
+			<div class="hp-empty-state hp-card hp-surface-pure">
 				<p><?php esc_html_e( 'No posts yet. Check back soon for skincare tips and guides.', 'herbalpearls' ); ?></p>
 				<a href="<?php echo esc_url( get_permalink( wc_get_page_id( 'shop' ) ) ); ?>" class="hp-btn hp-btn--primary hp-mt-1">
 					<?php esc_html_e( 'Shop Now', 'herbalpearls' ); ?>

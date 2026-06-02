@@ -12,10 +12,10 @@ if ( ! defined( 'ABSPATH' ) ) {
 get_header();
 ?>
 
-<header class="hp-section hp-section--sm hp-text-center">
+<header class="hp-blog-header">
 	<div class="hp-container">
 		<?php the_archive_title( '<h1>', '</h1>' ); ?>
-		<?php the_archive_description( '<p class="hp-subtitle hp-mt-1">', '</p>' ); ?>
+		<?php the_archive_description( '<p class="hp-subtitle">', '</p>' ); ?>
 	</div>
 </header>
 
@@ -59,7 +59,9 @@ get_header();
 			</div>
 			<?php the_posts_pagination(); ?>
 		<?php else : ?>
-			<p><?php esc_html_e( 'No posts found.', 'herbalpearls' ); ?></p>
+			<div class="hp-empty-state hp-card hp-surface-pure">
+				<p><?php esc_html_e( 'No posts found.', 'herbalpearls' ); ?></p>
+			</div>
 		<?php endif; ?>
 	</div>
 </section>

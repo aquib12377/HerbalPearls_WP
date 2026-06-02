@@ -12,8 +12,8 @@ if ( ! defined( 'ABSPATH' ) ) {
 get_header();
 ?>
 
-<header class="hp-section hp-section--sm">
-	<div class="hp-container hp-text-center">
+<header class="hp-blog-header">
+	<div class="hp-container">
 		<h1>
 			<?php
 			printf(
@@ -23,7 +23,7 @@ get_header();
 			);
 			?>
 		</h1>
-		<div class="hp-mt-1">
+		<div class="hp-mt-1" style="max-width: 480px; margin-inline: auto;">
 			<?php get_search_form(); ?>
 		</div>
 	</div>
@@ -41,7 +41,7 @@ get_header();
 						<h3>
 							<a href="<?php the_permalink(); ?>"><?php the_title(); ?></a>
 						</h3>
-						<div class="hp-mt-1" style="font-size: 0.9375rem;">
+						<div class="hp-mt-1">
 							<?php the_excerpt(); ?>
 						</div>
 					</article>
@@ -49,7 +49,9 @@ get_header();
 			</div>
 			<?php the_posts_pagination(); ?>
 		<?php else : ?>
-			<p><?php esc_html_e( 'No results found. Try a different search term.', 'herbalpearls' ); ?></p>
+			<div class="hp-empty-state hp-card hp-surface-pure">
+				<p><?php esc_html_e( 'No results found. Try a different search term.', 'herbalpearls' ); ?></p>
+			</div>
 		<?php endif; ?>
 	</div>
 </section>

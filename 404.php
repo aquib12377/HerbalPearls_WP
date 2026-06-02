@@ -12,13 +12,18 @@ if ( ! defined( 'ABSPATH' ) ) {
 get_header();
 ?>
 
-<main id="main" class="hp-section hp-text-center">
+<header class="hp-blog-header">
 	<div class="hp-container">
 		<h1><?php esc_html_e( 'Page not found', 'herbalpearls' ); ?></h1>
-		<p class="hp-mt-1 hp-subtitle">
+		<p class="hp-subtitle">
 			<?php esc_html_e( 'The page you are looking for does not exist or has been moved.', 'herbalpearls' ); ?>
 		</p>
-		<div class="hp-mt-2">
+	</div>
+</header>
+
+<section class="hp-section hp-surface-page hp-text-center">
+	<div class="hp-container">
+		<div>
 			<a href="<?php echo esc_url( home_url( '/' ) ); ?>" class="hp-btn hp-btn--primary">
 				<?php esc_html_e( 'Return Home', 'herbalpearls' ); ?>
 			</a>
@@ -27,7 +32,7 @@ get_header();
 			<?php get_search_form(); ?>
 		</div>
 	</div>
-</main>
+</section>
 
 <?php
 get_footer();

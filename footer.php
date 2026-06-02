@@ -25,7 +25,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 						</span>
 					<?php endif; ?>
 				</div>
-				<p class="hp-footer__tagline" style="font-size: 0.9375rem;">
+				<p class="hp-footer__tagline">
 					<?php esc_html_e( 'Herbal skincare that works. Formulated with proven natural ingredients, backed by science.', 'herbalpearls' ); ?>
 				</p>
 				<div class="hp-footer__social">

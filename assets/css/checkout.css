@@ -8,62 +8,45 @@
 
 /* ============================================================
    1. CHECKOUT LAYOUT
+   Two-column grid on >= 900px: customer details | order summary.
+   The selector is scoped to `form.woocommerce-checkout` so it
+   doesn't bleed onto <body class="woocommerce-checkout"> (which
+   would grid-layout the whole site).
    ============================================================ */
 
-.woocommerce-checkout {
+form.woocommerce-checkout {
 	display: grid;
 	grid-template-columns: 1fr;
 	gap: 1.5rem;
-	max-width: 1280px;
-	margin-inline: auto;
-	padding: 1.5rem 1rem;
 }
 
 @media (min-width: 900px) {
-	.woocommerce-checkout {
-		grid-template-columns: 1fr 380px;
+	form.woocommerce-checkout {
+		grid-template-columns: minmax(0, 1fr) 380px;
 		gap: 2.5rem;
-		padding: 3rem 2rem;
+		align-items: start;
 	}
 }
 
-/* ============================================================
-   2. FORM SECTIONS
-   ============================================================ */
-
-.woocommerce-billing-fields,
-.woocommerce-shipping-fields,
-.woocommerce-additional-fields {
-	background: var(--hp-bg-pure);
-	border: 1px solid var(--hp-line-1);
-	border-radius: 12px;
-	padding: 1.25rem;
-	margin-bottom: 1.25rem;
-}
-
-.woocommerce-billing-fields h3,
-.woocommerce-shipping-fields h3,
-.woocommerce-additional-fields h3 {
-	font-family: 'Cormorant Garamond', Georgia, serif;
-	font-size: 1.25rem;
-	font-weight: 600;
-	color: var(--hp-text-1);
-	margin-bottom: 1rem;
-	padding-bottom: 0.625rem;
-	border-bottom: 1px solid var(--hp-line-3);
-}
-
-/* Two-column billing */
-.woocommerce-checkout .col2-set {
-	display: grid;
-	grid-template-columns: 1fr;
+/* The legacy WC two-column billing/shipping container — keep it
+ * stacked vertically inside our customer-details column. There's
+ * not enough horizontal room for billing|shipping side-by-side
+ * once the order summary sidebar is in place. */
+form.woocommerce-checkout .col2-set {
+	display: flex;
+	flex-direction: column;
 	gap: 1.25rem;
+	min-width: 0;
 }
 
-@media (min-width: 768px) {
-	.woocommerce-checkout .col2-set {
-		grid-template-columns: 1fr 1fr;
-	}
+/* Notices and coupon toggle live above the form — give them
+ * matching width so they don't span into the sidebar column. */
+.woocommerce-checkout-review-order,
+.woocommerce-checkout > .woocommerce-notices-wrapper,
+.woocommerce > .woocommerce-form-coupon-toggle,
+.woocommerce > .checkout_coupon,
+.woocommerce > .woocommerce-notices-wrapper {
+	width: 100%;
 }
 
 /* Form rows */

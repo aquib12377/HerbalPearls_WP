@@ -66,7 +66,7 @@ get_header();
 
 <!-- Contact Form -->
 <section class="hp-section hp-surface-1">
-	<div class="hp-container" style="max-width: 720px;">
+	<div class="hp-container hp-container--prose">
 		<div class="hp-text-center hp-mb-2">
 			<h2><?php esc_html_e( 'Send Us a Message', 'herbalpearls' ); ?></h2>
 			<p class="hp-subtitle hp-mt-1">

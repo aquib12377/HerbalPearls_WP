@@ -20,7 +20,7 @@ get_header();
 			?>
 			<article <?php post_class( 'hp-card hp-mb-1' ); ?>>
 				<?php if ( has_post_thumbnail() ) : ?>
-					<a href="<?php the_permalink(); ?>" class="hp-mb-1" style="display:block;border-radius:12px;overflow:hidden;">
+					<a href="<?php the_permalink(); ?>" class="hp-mb-1 hp-card-thumb-link">
 						<?php the_post_thumbnail( 'hp-blog-card' ); ?>
 					</a>
 				<?php endif; ?>
