@@ -144,26 +144,12 @@
 		});
 	});
 
-	/* ─────────────── Variation pills (PDP) ─────────────── */
-	document.querySelectorAll('.hp-var-pill').forEach((pill) => {
-		pill.addEventListener('click', () => {
-			const group = pill.parentNode;
-			group.querySelectorAll('.hp-var-pill').forEach((p) => {
-				p.classList.remove('is-active');
-				p.setAttribute('aria-checked', 'false');
-			});
-
-			pill.classList.add('is-active');
-			pill.setAttribute('aria-checked', 'true');
-
-			// Update hidden select
-			const select = group.parentNode.querySelector('select');
-			if (select) {
-				select.value = pill.dataset.value;
-				select.dispatchEvent(new Event('change', { bubbles: true }));
-			}
-		});
-	});
+	/* ─────────────── Variation pills (PDP) ───────────────
+	 * Handled inline in woocommerce/single-product/add-to-cart/variable.php
+	 * (self-contained: the template does its own variation lookup so the
+	 * form is safe to submit even if WC's add-to-cart-variation JS hasn't
+	 * initialized). Keeping this block empty preserves the surrounding
+	 * IIFE structure. */
 		/* Sticky mobile CTA — show/hide on scroll */
 		const stickyCTA = document.querySelector('[data-sticky-cta]');
 		const stickyATC = document.querySelector('[data-sticky-atc]');

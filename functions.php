@@ -9,7 +9,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-define( 'HP_VERSION', '1.1.0' );
+define( 'HP_VERSION', '1.1.1' );
 define( 'HP_DIR', get_stylesheet_directory() );
 define( 'HP_URI', get_stylesheet_directory_uri() );
 
