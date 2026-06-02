@@ -65,7 +65,11 @@ add_action( 'wp_enqueue_scripts', function() {
 		);
 	}
 
-	if ( is_cart() ) {
+	/* Mini-cart drawer toggle — needed on every WC-enabled page since
+	 * the cart icon lives in the header. The drawer DOM is rendered
+	 * by header.php's get_template_part('woocommerce/cart/mini-cart')
+	 * whenever WC is active. */
+	if ( function_exists( 'WC' ) ) {
 		wp_enqueue_script( 'hp-cart-drawer', HP_URI . '/assets/js/mini-cart.js', [], $v, true );
 	}
 
