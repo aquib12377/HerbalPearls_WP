@@ -1,215 +1,173 @@
 /**
  * Herbal Pearls — Main JS
- * Mobile menu toggle, accordion, sticky header, smooth scroll.
+ * Mobile drawer, header scroll, accordion, quantity stepper.
  * Vanilla JS, no jQuery.
  *
  * @package HerbalPearls
  */
 
-(function () {
-	'use strict';
+(function(){
+  'use strict';
 
-	/* ─────────────── Mobile menu toggle ─────────────── */
-	const menuToggle = document.querySelector('[data-toggle="mobile-menu"]');
-	const mobileMenu = document.getElementById('mobile-menu');
-	const mobileOverlay = document.getElementById('mobile-menu-overlay');
+  /* ─────────────── Header scroll effect ─────────────── */
+  const header = document.querySelector('.hp-header');
+  if(header){
+    const onScroll = () => header.classList.toggle('is-scrolled', window.scrollY > 10);
+    window.addEventListener('scroll', onScroll, {passive:true});
+    onScroll();
+  }
 
-	if (menuToggle && mobileMenu) {
-		menuToggle.addEventListener('click', () => {
-			const isOpen = mobileMenu.classList.toggle('is-open');
-			menuToggle.setAttribute('aria-expanded', isOpen);
+  /* ─────────────── Mobile drawer ─────────────── */
+  const drawer = document.getElementById('mobile-menu');
+  const overlay = document.getElementById('mobile-menu-overlay');
+  const toggleBtns = document.querySelectorAll('.hp-menu-toggle');
+  const closeBtns = document.querySelectorAll('.hp-menu-close');
 
-			if (mobileOverlay) {
-				mobileOverlay.classList.toggle('is-open', isOpen);
-				mobileOverlay.setAttribute('aria-hidden', !isOpen);
-			}
-			mobileMenu.setAttribute('aria-hidden', !isOpen);
-			document.body.style.overflow = isOpen ? 'hidden' : '';
-		});
+  function openDrawer(){
+    if(!drawer) return;
+    drawer.classList.add('is-open');
+    drawer.setAttribute('aria-hidden','false');
+    if(overlay){ overlay.classList.add('is-open'); overlay.setAttribute('aria-hidden','false'); }
+    document.body.style.overflow = 'hidden';
+  }
 
-		if (mobileOverlay) {
-			mobileOverlay.addEventListener('click', closeMobileMenu);
-		}
-	}
+  function closeDrawer(){
+    if(!drawer) return;
+    drawer.classList.remove('is-open');
+    drawer.setAttribute('aria-hidden','true');
+    if(overlay){ overlay.classList.remove('is-open'); overlay.setAttribute('aria-hidden','true'); }
+    document.body.style.overflow = '';
+  }
 
-	function closeMobileMenu() {
-		if (mobileMenu) {
-			mobileMenu.classList.remove('is-open');
-			mobileMenu.setAttribute('aria-hidden', 'true');
-		}
-		if (mobileOverlay) {
-			mobileOverlay.classList.remove('is-open');
-			mobileOverlay.setAttribute('aria-hidden', 'true');
-		}
-		if (menuToggle) {
-			menuToggle.setAttribute('aria-expanded', 'false');
-		}
-		document.body.style.overflow = '';
-	}
+  toggleBtns.forEach(function(btn){ btn.addEventListener('click', openDrawer); });
+  closeBtns.forEach(function(btn){ btn.addEventListener('click', closeDrawer); });
+  if(overlay) overlay.addEventListener('click', closeDrawer);
+  document.addEventListener('keydown', function(e){ if(e.key==='Escape') closeDrawer(); });
 
-	/* ─────────────── Accordion ─────────────── */
-	document.querySelectorAll('[data-accordion] .hp-accordion__trigger').forEach((trigger) => {
-		trigger.addEventListener('click', () => {
-			const item = trigger.closest('.hp-accordion__item');
-			if (!item) return;
+  /* ─────────────── Cart count live update (WooCommerce fragments) ─────────────── */
+  document.body.addEventListener('wc_fragments_refreshed', function(){
+    const countEls = document.querySelectorAll('[data-cart-count]');
+    countEls.forEach(function(el){
+      const newCount = el.textContent.trim();
+      if(newCount==='0') el.style.display='none'; else el.style.display='';
+    });
+  });
 
-			const isOpen = item.classList.contains('is-open');
+  /* ─────────────── Accordion ─────────────── */
+  document.querySelectorAll('[data-accordion] .hp-accordion__trigger').forEach(function(trigger){
+    trigger.addEventListener('click', function(){
+      const item = trigger.closest('.hp-accordion__item');
+      if(!item) return;
 
-			// Close all siblings
-			const parent = item.parentNode;
-			parent.querySelectorAll('.hp-accordion__item.is-open').forEach((el) => {
-				el.classList.remove('is-open');
-				el.querySelector('.hp-accordion__trigger')?.setAttribute('aria-expanded', 'false');
-			});
+      const isOpen = item.classList.contains('is-open');
 
-			// Toggle current
-			if (!isOpen) {
-				item.classList.add('is-open');
-				trigger.setAttribute('aria-expanded', 'true');
-			} else {
-				item.classList.remove('is-open');
-				trigger.setAttribute('aria-expanded', 'false');
-			}
-		});
-	});
+      const parent = item.parentNode;
+      parent.querySelectorAll('.hp-accordion__item.is-open').forEach(function(el){
+        el.classList.remove('is-open');
+        const t = el.querySelector('.hp-accordion__trigger');
+        if(t) t.setAttribute('aria-expanded','false');
+      });
 
-	/* ─────────────── Sticky header on scroll ─────────────── */
-	const header = document.getElementById('masthead');
-	let lastScrollY = 0;
+      if(!isOpen){
+        item.classList.add('is-open');
+        trigger.setAttribute('aria-expanded','true');
+      }
+    });
+  });
 
-	function onScroll() {
-		const scrollY = window.scrollY;
-		if (header) {
-			header.classList.toggle('is-scrolled', scrollY > 20);
-		}
-		lastScrollY = scrollY;
-	}
+  /* ─────────────── Smooth scroll for in-page anchors ─────────────── */
+  document.querySelectorAll('a[href^="#"]').forEach(function(anchor){
+    anchor.addEventListener('click', function(e){
+      const href = anchor.getAttribute('href');
+      if(!href || href==='#') return;
+      const target = document.querySelector(href);
+      if(!target) return;
+      e.preventDefault();
+      target.scrollIntoView({behavior:'smooth', block:'start'});
+    });
+  });
 
-	window.addEventListener('scroll', onScroll, { passive: true });
+  /* ─────────────── Quantity stepper ─────────────── */
+  document.querySelectorAll('.hp-qty').forEach(function(stepper){
+    const input = stepper.querySelector('.hp-qty__input');
+    const minusBtn = stepper.querySelector('[data-action="minus"]');
+    const plusBtn = stepper.querySelector('[data-action="plus"]');
 
-	/* ─────────────── Smooth scroll for in-page anchors ─────────────── */
-	document.querySelectorAll('a[href^="#"]').forEach((anchor) => {
-		anchor.addEventListener('click', (e) => {
-			const href = anchor.getAttribute('href');
-			if (!href || href === '#') return;
+    if(!input) return;
 
-			const target = document.querySelector(href);
-			if (!target) return;
+    if(minusBtn) minusBtn.addEventListener('click', function(){
+      const val = parseInt(input.value, 10) || 1;
+      const min = parseInt(input.getAttribute('min'), 10) || 1;
+      if(val > min){
+        input.value = val - 1;
+        input.dispatchEvent(new Event('change', {bubbles:true}));
+      }
+    });
 
-			e.preventDefault();
-			target.scrollIntoView({ behavior: 'smooth', block: 'start' });
-		});
-	});
+    if(plusBtn) plusBtn.addEventListener('click', function(){
+      const val = parseInt(input.value, 10) || 1;
+      const max = parseInt(input.getAttribute('max'), 10) || Infinity;
+      if(val < max){
+        input.value = val + 1;
+        input.dispatchEvent(new Event('change', {bubbles:true}));
+      }
+    });
+  });
 
-	/* ─────────────── Hero slider auto-rotation ─────────────── */
-	const heroSlider = document.querySelector('[data-hero-slider]');
-	if (heroSlider) {
-		const slides = heroSlider.querySelectorAll('.hp-hero__slide');
-		const reduceMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-		let current = 0;
+  /* ─────────────── Variation pills (PDP) ─────────────── */
+  document.querySelectorAll('.hp-var-pill').forEach(function(pill){
+    pill.addEventListener('click', function(){
+      const group = pill.parentNode;
+      group.querySelectorAll('.hp-var-pill').forEach(function(p){
+        p.classList.remove('is-active');
+        p.setAttribute('aria-checked','false');
+      });
+      pill.classList.add('is-active');
+      pill.setAttribute('aria-checked','true');
 
-		if (slides.length > 1 && !reduceMotion) {
-			setInterval(() => {
-				slides[current].setAttribute('hidden', '');
-				current = (current + 1) % slides.length;
-				slides[current].removeAttribute('hidden');
-			}, 5000);
-		}
-	}
+      const select = group.parentNode.querySelector('select');
+      if(select){
+        select.value = pill.dataset.value;
+        select.dispatchEvent(new Event('change', {bubbles:true}));
+      }
+    });
+  });
 
-	/* ─────────────── Quantity stepper ─────────────── */
-	document.querySelectorAll('.hp-qty').forEach((stepper) => {
-		const input = stepper.querySelector('.hp-qty__input');
-		const minusBtn = stepper.querySelector('[data-action="minus"]');
-		const plusBtn = stepper.querySelector('[data-action="plus"]');
+  /* ─────────────── Sticky mobile CTA — show/hide on scroll ─────────────── */
+  const stickyCTA = document.querySelector('[data-sticky-cta]');
+  const stickyATC = document.querySelector('[data-sticky-atc]');
+  const desktopForm = document.querySelector('.hp-pdp__info form.cart');
 
-		if (!input) return;
+  if(stickyCTA && stickyATC && desktopForm){
+    let ticking = false;
 
-		minusBtn?.addEventListener('click', () => {
-			const val = parseInt(input.value, 10) || 1;
-			const min = parseInt(input.getAttribute('min'), 10) || 1;
-			if (val > min) {
-				input.value = val - 1;
-				input.dispatchEvent(new Event('change', { bubbles: true }));
-			}
-		});
+    const updateStickyBar = function(){
+      const scrollY = window.scrollY;
+      const docHeight = document.documentElement.scrollHeight;
+      const winHeight = window.innerHeight;
+      const atBottom = scrollY + winHeight >= docHeight - 100;
 
-		plusBtn?.addEventListener('click', () => {
-			const val = parseInt(input.value, 10) || 1;
-			const max = parseInt(input.getAttribute('max'), 10) || Infinity;
-			if (val < max) {
-				input.value = val + 1;
-				input.dispatchEvent(new Event('change', { bubbles: true }));
-			}
-		});
-	});
+      if(scrollY > 600 && !atBottom){
+        stickyCTA.removeAttribute('aria-hidden');
+      } else {
+        stickyCTA.setAttribute('aria-hidden','true');
+      }
+      ticking = false;
+    };
 
-	/* ─────────────── Variation pills (PDP) ─────────────── */
-	document.querySelectorAll('.hp-var-pill').forEach((pill) => {
-		pill.addEventListener('click', () => {
-			const group = pill.parentNode;
-			group.querySelectorAll('.hp-var-pill').forEach((p) => {
-				p.classList.remove('is-active');
-				p.setAttribute('aria-checked', 'false');
-			});
+    stickyATC.addEventListener('click', function(){
+      const desktopBtn = desktopForm.querySelector('button[type="submit"]');
+      if(desktopBtn){ desktopBtn.click(); } else { desktopForm.submit(); }
+    });
 
-			pill.classList.add('is-active');
-			pill.setAttribute('aria-checked', 'true');
+    window.addEventListener('scroll', function(){
+      if(!ticking){
+        window.requestAnimationFrame(updateStickyBar);
+        ticking = true;
+      }
+    }, {passive:true});
 
-			// Update hidden select
-			const select = group.parentNode.querySelector('select');
-			if (select) {
-				select.value = pill.dataset.value;
-				select.dispatchEvent(new Event('change', { bubbles: true }));
-			}
-		});
-	});
-		/* Sticky mobile CTA — show/hide on scroll */
-		const stickyCTA = document.querySelector('[data-sticky-cta]');
-		const stickyATC = document.querySelector('[data-sticky-atc]');
-		const desktopForm = document.querySelector('.hp-pdp__info form.cart');
-
-		if (stickyCTA && stickyATC && desktopForm) {
-			let lastScrollY = 0;
-			let ticking = false;
-
-			const updateStickyBar = () => {
-				const scrollY = window.scrollY;
-				const docHeight = document.documentElement.scrollHeight;
-				const winHeight = window.innerHeight;
-				const atBottom = scrollY + winHeight >= docHeight - 100;
-
-				// Show bar after scrolling past the desktop CTA (roughly 600px from top)
-				if (scrollY > 600 && !atBottom) {
-					stickyCTA.removeAttribute('aria-hidden');
-				} else if (atBottom) {
-					stickyCTA.setAttribute('aria-hidden', 'true');
-				} else {
-					stickyCTA.setAttribute('aria-hidden', 'true');
-				}
-
-				ticking = false;
-			};
-
-			// Click on sticky CTA triggers the desktop form submit
-			stickyATC.addEventListener('click', () => {
-				const desktopBtn = desktopForm.querySelector('button[type="submit"]');
-				if (desktopBtn) {
-					desktopBtn.click();
-				} else {
-					desktopForm.submit();
-				}
-			});
-
-			window.addEventListener('scroll', () => {
-				lastScrollY = window.scrollY;
-				if (!ticking) {
-					window.requestAnimationFrame(updateStickyBar);
-					ticking = true;
-				}
-			}, { passive: true });
-
-			updateStickyBar();
-		}
+    updateStickyBar();
+  }
 
 })();
