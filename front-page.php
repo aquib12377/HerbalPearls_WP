@@ -132,7 +132,12 @@ get_header(); ?>
               <span class="hp-price"><?php echo wp_kses_post($product->get_price_html()); ?></span>
             <?php endif; ?>
           </div>
-          <a href="<?php the_permalink(); ?>" class="hp-btn hp-btn--ghost hp-btn--block"><?php esc_html_e('Add to Cart','herbalpearls'); ?></a>
+          <?php
+          if($product && $product->is_purchasable() && $product->is_in_stock()):
+            woocommerce_template_loop_add_to_cart();
+          else: ?>
+            <a href="<?php the_permalink(); ?>" class="hp-btn hp-btn--ghost hp-btn--block"><?php esc_html_e('View Product','herbalpearls'); ?></a>
+          <?php endif; ?>
         </div>
       </div>
       <?php endwhile; wp_reset_postdata(); ?>

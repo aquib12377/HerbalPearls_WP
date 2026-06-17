@@ -24,8 +24,8 @@ add_action( 'wp_enqueue_scripts', function() {
 	wp_enqueue_style( 'hp-components', HP_URI . '/assets/css/components.css', [ 'hp-base' ], $v );
 	wp_enqueue_style( 'hp-warm',       HP_URI . '/assets/css/warm-theme.css', [ 'hp-components' ], $v );
 
-	/* ── WooCommerce (shop-aware pages) ── */
-	if ( is_woocommerce() || is_cart() || is_checkout() ) {
+	/* ── WooCommerce (shop-aware pages + front page which has product cards) ── */
+	if ( is_woocommerce() || is_cart() || is_checkout() || is_front_page() ) {
 		wp_enqueue_style( 'hp-woo', HP_URI . '/assets/css/woocommerce.css', [ 'hp-warm' ], $v );
 	}
 
@@ -81,7 +81,7 @@ add_action( 'wp_enqueue_scripts', function() {
 	wp_dequeue_style( 'woocommerce-smallscreen' );
 	wp_dequeue_style( 'wc-blocks-style' );
 
-	if ( ! is_woocommerce() && ! is_cart() && ! is_checkout() && ! is_account_page() ) {
+	if ( ! is_woocommerce() && ! is_cart() && ! is_checkout() && ! is_account_page() && ! is_front_page() ) {
 		wp_dequeue_script( 'wc-cart-fragments' );
 		wp_dequeue_script( 'wc-add-to-cart' );
 		wp_dequeue_script( 'woocommerce' );

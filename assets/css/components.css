@@ -289,6 +289,13 @@
 	inset: 0;
 	z-index: 59;
 	background: transparent;
+	pointer-events: none;
+	display: none;
+}
+
+.hp-drawer__overlay.is-open {
+	display: block;
+	pointer-events: auto;
 }
 
 /* ============================================================

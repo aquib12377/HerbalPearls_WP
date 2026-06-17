@@ -566,3 +566,46 @@
 		align-items: flex-start;
 	}
 }
+
+/* ============================================================
+   WooCommerce native add-to-cart button inside hp-card
+   ============================================================ */
+
+.hp-card__body .button.add_to_cart_button,
+.hp-card__body .button.ajax_add_to_cart,
+.hp-card__body .button.single_add_to_cart_button {
+	display: inline-flex !important;
+	align-items: center;
+	justify-content: center;
+	width: 100% !important;
+	font-family: var(--hp-font-body) !important;
+	font-size: 0.78rem !important;
+	font-weight: 400 !important;
+	letter-spacing: var(--hp-ls-btn) !important;
+	text-transform: uppercase !important;
+	padding: 14px !important;
+	border: 1px solid var(--hp-green) !important;
+	border-radius: var(--hp-radius-sm) !important;
+	background: transparent !important;
+	color: var(--hp-green) !important;
+	cursor: pointer !important;
+	text-decoration: none !important;
+	transition: background var(--hp-dur) var(--hp-ease), color var(--hp-dur) var(--hp-ease), transform var(--hp-dur) var(--hp-ease), box-shadow var(--hp-dur) var(--hp-ease) !important;
+}
+
+.hp-card__body .button.add_to_cart_button:hover,
+.hp-card__body .button.ajax_add_to_cart:hover {
+	background: var(--hp-green) !important;
+	color: var(--hp-cream) !important;
+	transform: translateY(-2px) !important;
+	box-shadow: var(--hp-shadow-card) !important;
+}
+
+.hp-card__body .button.add_to_cart_button.loading {
+	opacity: 0.6 !important;
+}
+
+.hp-card__body .button.add_to_cart_button.added {
+	background: var(--hp-green) !important;
+	color: var(--hp-cream) !important;
+}
