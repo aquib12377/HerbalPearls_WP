@@ -1,105 +1,611 @@
 /**
- * Herbal Pearls — Warm Theme (Section-Level Visual Treatment)
- * v3 §6 section surfaces, homepage rhythm, PDP alternation.
+ * Herbal Pearls — Warm Theme / Front-Page Section Styles
+ * Luxe Apothecary redesign — hero, marquee, categories, combo, ingredients, promise, newsletter.
  * All colors from tokens.css.
  *
  * @package HerbalPearls
  */
 
 /* ============================================================
-   1. HOMEPAGE RHYTHM (v3 §6.1)
+   1. HERO SPLIT
    ============================================================ */
 
-/* [4] Trust strip */
-.hp-trust-strip {
-	background: var(--hp-bg-1);
+.hp-hero-split {
+	max-width: 1240px;
+	margin: 0 auto;
 }
 
-/* [5] Category triptych — bg-page, cards are white */
-.hp-surface-page {
-	background: var(--hp-bg-page);
+.hp-hero-split__inner {
+	padding: 64px 32px 40px;
+	display: grid;
+	grid-template-columns: 1.05fr 1fr;
+	gap: 56px;
+	align-items: center;
 }
 
-/* [6] Bestsellers — bg-2 deeper champagne band */
-.hp-surface-2 {
-	background: var(--hp-bg-2);
+.hp-hero-split__title {
+	font-family: var(--hp-font-display);
+	font-weight: 500;
+	font-size: 74px;
+	line-height: 1.02;
+	letter-spacing: -0.01em;
+	margin: 0 0 26px;
+	color: var(--hp-green);
 }
 
-/* [8] Ingredient story — bg-1 */
-.hp-surface-1 {
-	background: var(--hp-bg-1);
+.hp-hero-split__lead {
+	font-size: 16px;
+	line-height: 1.7;
+	color: var(--hp-text-soft);
+	max-width: 430px;
+	margin: 0 0 38px;
+	font-weight: 300;
 }
 
-/* [9] Reviews — bg-2 */
-/* section already handled via .hp-surface-2 */
-
-/* [11] Newsletter — bg-3 sandstone */
-.hp-surface-3 {
-	background: var(--hp-bg-3);
+.hp-hero-split__cta {
+	display: flex;
+	gap: 16px;
+	align-items: center;
 }
 
-/* Cards on tinted backgrounds use pure white */
+.hp-hero-split__frame {
+	position: relative;
+}
+
+.hp-hero-split__img-wrap {
+	overflow: hidden;
+	border-radius: var(--hp-radius);
+	box-shadow: var(--hp-shadow-hero);
+}
+
+.hp-hero-split__img {
+	width: 100%;
+	height: 560px;
+	object-fit: cover;
+	display: block;
+}
+
+.hp-hero-split__img--placeholder {
+	height: 560px;
+	background: var(--hp-cream-card);
+}
+
+.hp-hero-split__seal {
+	position: absolute;
+	bottom: -26px;
+	left: -26px;
+	width: 118px;
+	height: 118px;
+	border-radius: 999px;
+	background: var(--hp-cream);
+	border: 1px solid var(--hp-line-brass);
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+	text-align: center;
+	box-shadow: var(--hp-shadow-seal);
+	z-index: 3;
+}
+
+.hp-hero-split__seal-num {
+	font-family: var(--hp-font-display);
+	font-size: 30px;
+	font-weight: 600;
+	color: var(--hp-brass);
+	line-height: 1;
+}
+
+.hp-hero-split__seal-label {
+	font-size: 9.5px;
+	letter-spacing: 0.2em;
+	text-transform: uppercase;
+	color: var(--hp-green);
+	margin-top: 5px;
+	font-family: var(--hp-font-body);
+}
+
+/* ============================================================
+   2. TRUST MARQUEE
+   ============================================================ */
+
+.hp-marquee-band {
+	border-top: 1px solid var(--hp-line);
+	border-bottom: 1px solid var(--hp-line);
+	overflow: hidden;
+	margin-top: 24px;
+}
+
+.hp-marquee-track {
+	display: flex;
+	width: max-content;
+	animation: hpMarquee 26s linear infinite;
+}
+
+.hp-marquee-inner {
+	display: flex;
+	align-items: center;
+}
+
+.hp-marquee-item {
+	padding: 18px 44px;
+	font-family: var(--hp-font-body);
+	font-size: 12px;
+	letter-spacing: 0.26em;
+	text-transform: uppercase;
+	color: var(--hp-green);
+}
+
+.hp-marquee-tick {
+	color: var(--hp-brass);
+}
+
+/* ============================================================
+   3. CATEGORY CARDS
+   ============================================================ */
+
+.hp-cat-card {
+	display: block;
+	text-decoration: none;
+	cursor: pointer;
+	position: relative;
+	overflow: hidden;
+	border-radius: var(--hp-radius);
+	transition: transform var(--hp-dur) var(--hp-ease), box-shadow var(--hp-dur);
+}
+
+.hp-cat-card:hover {
+	transform: translateY(-3px);
+	box-shadow: var(--hp-shadow-card);
+}
+
+.hp-cat-card:hover .hp-card__img {
+	transform: scale(1.06);
+}
+
+.hp-cat-card__overlay {
+	position: absolute;
+	inset: 0;
+	background: linear-gradient(180deg, rgba(28,48,36,0) 40%, rgba(28,48,36,0.72) 100%);
+}
+
+.hp-cat-card__caption {
+	position: absolute;
+	left: 0;
+	right: 0;
+	bottom: 0;
+	padding: 30px;
+	color: #f4efe3;
+}
+
+.hp-cat-card__title {
+	font-family: var(--hp-font-display);
+	font-weight: 600;
+	font-size: 30px;
+	margin: 0 0 4px;
+	color: #f4efe3;
+}
+
+.hp-cat-card__blurb {
+	font-family: var(--hp-font-body);
+	font-size: 12px;
+	letter-spacing: 0.16em;
+	text-transform: uppercase;
+	opacity: 0.85;
+}
+
+/* ============================================================
+   4. CARD BODY
+   ============================================================ */
+
+.hp-card__body {
+	padding: 20px 4px 0;
+	display: flex;
+	flex-direction: column;
+	flex: 1;
+}
+
+.hp-card__title {
+	font-family: var(--hp-font-display);
+	font-weight: 600;
+	font-size: 24px;
+	margin: 0 0 6px;
+	color: var(--hp-green);
+}
+
+.hp-card__title a {
+	text-decoration: none;
+	color: inherit;
+}
+
+.hp-card__desc {
+	font-size: 13.5px;
+	line-height: 1.55;
+	color: var(--hp-text-muted);
+	font-weight: 300;
+	margin: 0 0 16px;
+	flex: 1;
+}
+
+.hp-card__pricing {
+	display: flex;
+	align-items: baseline;
+	gap: 10px;
+	margin-bottom: 16px;
+}
+
+.hp-price {
+	font-family: var(--hp-font-display);
+	font-size: 24px;
+	font-weight: 600;
+	color: var(--hp-green);
+}
+
+.hp-price del {
+	font-size: 14px;
+	color: #a99;
+	text-decoration: line-through;
+	font-family: var(--hp-font-body);
+	font-weight: 400;
+}
+
+/* ============================================================
+   5. COMBO BAND
+   ============================================================ */
+
+.hp-combo-band {
+	background: var(--hp-green);
+	color: var(--hp-text-on-dark);
+}
+
+.hp-combo-band__inner {
+	max-width: 1240px;
+	margin: 0 auto;
+	padding: 80px 32px;
+	display: grid;
+	grid-template-columns: 1fr 1fr;
+	gap: 60px;
+	align-items: center;
+}
+
+.hp-combo-band__title {
+	color: #f4efe3;
+	font-size: 50px;
+	line-height: 1.05;
+	margin: 0 0 20px;
+}
+
+.hp-combo-band__lead {
+	font-size: 15px;
+	line-height: 1.7;
+	color: var(--hp-text-on-dark-muted);
+	font-weight: 300;
+	max-width: 420px;
+	margin: 0 0 32px;
+}
+
+.hp-combo-band__imgs {
+	display: flex;
+	gap: 18px;
+	justify-content: flex-end;
+}
+
+.hp-combo-band__img-wrap {
+	overflow: hidden;
+	border-radius: var(--hp-radius);
+	width: 46%;
+	box-shadow: 0 30px 60px -30px rgba(0,0,0,0.6);
+}
+
+.hp-combo-band__img {
+	width: 100%;
+	height: 340px;
+	object-fit: cover;
+	display: block;
+}
+
+.hp-combo-band__img--placeholder {
+	height: 340px;
+	background: rgba(255,255,255,0.08);
+}
+
+/* ============================================================
+   6. INGREDIENTS
+   ============================================================ */
+
+.hp-ing-grid {
+	display: grid;
+	grid-template-columns: repeat(4, 1fr);
+	gap: 0;
+	border: 1px solid var(--hp-line);
+	border-radius: var(--hp-radius);
+	overflow: hidden;
+}
+
+.hp-ing-card {
+	padding: 38px 30px;
+	border-right: 1px solid var(--hp-line);
+	background: var(--hp-cream-card);
+}
+
+.hp-ing-card:last-child {
+	border-right: none;
+}
+
+.hp-ing-card__no {
+	font-family: var(--hp-font-display);
+	font-size: 22px;
+	color: var(--hp-brass);
+	font-style: italic;
+	margin-bottom: 14px;
+}
+
+.hp-ing-card__name {
+	font-family: var(--hp-font-display);
+	font-weight: 600;
+	font-size: 24px;
+	margin: 0 0 12px;
+	color: var(--hp-green);
+}
+
+.hp-ing-card__desc {
+	font-size: 13.5px;
+	line-height: 1.6;
+	color: var(--hp-text-muted);
+	font-weight: 300;
+	margin: 0;
+}
+
+.hp-ingredients__lead {
+	font-size: 15px;
+	color: var(--hp-text-muted);
+	font-weight: 300;
+	margin: 14px 0 0;
+}
+
+/* ============================================================
+   7. PROMISE
+   ============================================================ */
+
+.hp-promise {
+	padding-bottom: 80px;
+}
+
+.hp-promise-grid {
+	display: grid;
+	grid-template-columns: repeat(4, 1fr);
+	gap: 24px;
+	text-align: center;
+}
+
+.hp-promise-item {
+	padding: 30px 18px;
+}
+
+.hp-promise-item__icon {
+	font-family: var(--hp-font-display);
+	font-size: 38px;
+	color: var(--hp-brass);
+	margin-bottom: 10px;
+}
+
+.hp-promise-item__title {
+	font-family: var(--hp-font-body);
+	font-size: 13px;
+	letter-spacing: 0.14em;
+	text-transform: uppercase;
+	color: var(--hp-green);
+	margin-bottom: 6px;
+	font-weight: 400;
+}
+
+.hp-promise-item__sub {
+	font-size: 12.5px;
+	color: var(--hp-text-muted);
+	font-weight: 300;
+	line-height: 1.5;
+}
+
+/* ============================================================
+   8. NEWSLETTER
+   ============================================================ */
+
+.hp-newsletter {
+	background: var(--hp-cream-band);
+}
+
+.hp-newsletter__inner {
+	max-width: 760px;
+	margin: 0 auto;
+	padding: 78px 32px;
+	text-align: center;
+}
+
+.hp-newsletter__lead {
+	font-size: 15px;
+	color: var(--hp-text-soft);
+	font-weight: 300;
+	margin: 0 0 30px;
+}
+
+.hp-newsletter__form {
+	display: flex;
+	gap: 0;
+	max-width: 460px;
+	margin: 0 auto;
+	border: 1px solid var(--hp-green);
+	border-radius: var(--hp-radius-sm);
+	overflow: hidden;
+	background: var(--hp-cream);
+}
+
+.hp-newsletter__input {
+	flex: 1;
+	border: none;
+	background: transparent;
+	padding: 16px 20px;
+	font-family: var(--hp-font-body);
+	font-size: 14px;
+	color: var(--hp-green);
+	outline: none;
+}
+
+.hp-newsletter__input::placeholder {
+	color: var(--hp-text-muted);
+}
+
+/* ============================================================
+   9. SURFACE UTILITIES (keep existing surface classes working)
+   ============================================================ */
+
+.hp-surface-page   { background: var(--hp-cream); }
+.hp-surface-1      { background: var(--hp-cream-card); }
+.hp-surface-2      { background: var(--hp-cream-band); }
+.hp-surface-3      { background: var(--hp-cream-band); }
+.hp-surface-accent { background: var(--hp-cream-band); }
+.hp-surface-pure   { background: var(--hp-cream-card); }
+
+/* Cards on tinted backgrounds */
 .hp-surface-1 .hp-card,
 .hp-surface-2 .hp-card,
 .hp-surface-3 .hp-card {
-	background: var(--hp-bg-pure);
+	background: var(--hp-cream-card);
 }
 
 /* ============================================================
-   2. PDP ALTERNATION (v3 §6.2)
+   10. BLOG / PDP SURFACE
    ============================================================ */
 
-/* Cream throughout PDP body */
-.single-product .hp-section {
-	background: var(--hp-bg-page);
-}
-
-/* Gallery card stays white */
-.woocommerce div.product .woocommerce-product-gallery {
-	background: var(--hp-bg-pure);
-}
-
-/* Section alternation below PDP fold */
-.single-product .hp-related-section {
-	background: var(--hp-bg-page);
-}
+.single-product .hp-section { background: var(--hp-cream); }
+.woocommerce div.product .woocommerce-product-gallery { background: var(--hp-cream-card); }
+.single-product .hp-related-section { background: var(--hp-cream); }
+.woocommerce-cart, .woocommerce-checkout { background: var(--hp-cream); }
+.single-post .hp-post-content { max-width: 720px; margin-inline: auto; }
 
 /* ============================================================
-   3. CART / CHECKOUT SURFACES (v3 §6.3)
+   11. RESPONSIVE
    ============================================================ */
 
-.woocommerce-cart,
-.woocommerce-checkout {
-	background: var(--hp-bg-page);
-}
-
-/* ============================================================
-   4. HEADER & FOOTER POLISH
-   ============================================================ */
-
-.hp-header.is-scrolled {
-	border-bottom-color: var(--hp-line-3);
-}
-
-.hp-footer {
-	background: var(--hp-bg-3);
-}
-
-/* ============================================================
-   5. BLOG SINGLE
-   ============================================================ */
-
-.single-post .hp-post-content {
-	max-width: 720px;
-	margin-inline: auto;
-}
-
-/* ============================================================
-   6. MOBILE NAV
-   ============================================================ */
-
-@media (max-width: 1023px) {
-	.hp-header__nav {
-		display: none;
+@media (max-width: 900px) {
+	.hp-hero-split__inner {
+		grid-template-columns: 1fr;
+		gap: 34px;
+		padding: 34px 22px 24px;
 	}
+
+	.hp-hero-split__title {
+		font-size: 42px;
+	}
+
+	.hp-combo-band__inner {
+		grid-template-columns: 1fr;
+		gap: 34px;
+		padding: 54px 22px;
+	}
+
+	.hp-combo-band__imgs {
+		justify-content: flex-start;
+	}
+
+	.hp-ing-grid {
+		grid-template-columns: 1fr 1fr;
+	}
+
+	.hp-promise-grid {
+		grid-template-columns: 1fr 1fr;
+	}
+
+	.hp-newsletter__inner {
+		padding: 56px 22px;
+	}
+}
+
+@media (max-width: 560px) {
+	.hp-hero-split__title {
+		font-size: 33px;
+	}
+
+	.hp-hero-split__img,
+	.hp-hero-split__img--placeholder {
+		height: 360px;
+	}
+
+	.hp-ing-grid {
+		grid-template-columns: 1fr;
+	}
+
+	.hp-combo-band__imgs {
+		flex-direction: column;
+		gap: 14px;
+	}
+
+	.hp-combo-band__img-wrap {
+		width: 100%;
+	}
+
+	.hp-combo-band__img,
+	.hp-combo-band__img--placeholder {
+		height: 240px;
+	}
+
+	.hp-newsletter__form {
+		flex-direction: column;
+		border: none;
+		background: transparent;
+		gap: 10px;
+	}
+
+	.hp-newsletter__input {
+		border: 1px solid var(--hp-green);
+		border-radius: var(--hp-radius-sm);
+		text-align: center;
+	}
+
+	.hp-hero-split__cta {
+		flex-direction: column;
+		align-items: flex-start;
+	}
+}
+
+/* ============================================================
+   WooCommerce native add-to-cart button inside hp-card
+   ============================================================ */
+
+.hp-card__body .button.add_to_cart_button,
+.hp-card__body .button.ajax_add_to_cart,
+.hp-card__body .button.single_add_to_cart_button {
+	display: inline-flex !important;
+	align-items: center;
+	justify-content: center;
+	width: 100% !important;
+	font-family: var(--hp-font-body) !important;
+	font-size: 0.78rem !important;
+	font-weight: 400 !important;
+	letter-spacing: var(--hp-ls-btn) !important;
+	text-transform: uppercase !important;
+	padding: 14px !important;
+	border: 1px solid var(--hp-green) !important;
+	border-radius: var(--hp-radius-sm) !important;
+	background: transparent !important;
+	color: var(--hp-green) !important;
+	cursor: pointer !important;
+	text-decoration: none !important;
+	transition: background var(--hp-dur) var(--hp-ease), color var(--hp-dur) var(--hp-ease), transform var(--hp-dur) var(--hp-ease), box-shadow var(--hp-dur) var(--hp-ease) !important;
+}
+
+.hp-card__body .button.add_to_cart_button:hover,
+.hp-card__body .button.ajax_add_to_cart:hover {
+	background: var(--hp-green) !important;
+	color: var(--hp-cream) !important;
+	transform: translateY(-2px) !important;
+	box-shadow: var(--hp-shadow-card) !important;
+}
+
+.hp-card__body .button.add_to_cart_button.loading {
+	opacity: 0.6 !important;
+}
+
+.hp-card__body .button.add_to_cart_button.added {
+	background: var(--hp-green) !important;
+	color: var(--hp-cream) !important;
 }
